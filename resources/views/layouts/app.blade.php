@@ -4,7 +4,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/vendor/font-awesome/css/font-awesome.min.css')}}">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -12,7 +13,23 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-
+    <style type="text/css">
+        .navbar{
+            margin-bottom: 0;
+        }
+        .categ-inline{
+            margin-left: -2px;
+        }
+        .form-control{
+            border-radius: 0;
+            box-shadow: none;
+            border-color: #dedede;            
+            resize: none;
+        }
+        .pad0{padding: 0}
+        .m0{margin: 0}
+        @yield('css')
+    </style>
     <!-- Scripts -->
     <script>
         window.Laravel = {!! json_encode([

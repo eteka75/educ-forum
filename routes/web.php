@@ -11,14 +11,18 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
-Route::get('/forum', function () {
-    return view('welcome');
-});
 
 Auth::routes();
-
-Route::get('/home', 'HomeController@index');
+Route::get('/', 'PageController@index');
+Route::get('/home', 'HomeController@home');
+Route::post('sujets/new', 'Forum\\SujetsController@store');
+Route::get('sujets/new', 'Forum\\SujetsController@store');
+Route::resource('categories', 'Forum\\CategoriesController');
+Route::resource('categories', 'Forum\\CategoriesController');
+Route::resource('discussions', 'Forum\\DiscussionsController');
+Route::resource('posts', 'Forum\\PostsController');
+Route::resource('categories', 'Forum\\CategoriesController');
+Route::resource('categories', 'Forum\\CategoriesController');
+Route::resource('categories', 'Forum\\CategoriesController');
+Route::resource('domaines', 'Forum\\DomainesController');

@@ -1,95 +1,114 @@
-<!DOCTYPE html>
-<html lang="{{ config('app.locale') }}">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('layouts.app')
+@section('css')
+    #chatter_hero {
+    background-image: url(./assets/images/hero_bg.jpg);
+    width: 100%;
+    min-height: 150px;
+    position: relative;
+    background-size: cover;
+    background-position: center center;
+    text-align: center;
 
-        <title>Laravel</title>
+    }
+    .clear-1{
+    height:30px;
+    width:100%,
+    }
+    #forum  .btn.btn-primary {
+    border: 2px solid #cee0e6;
+    background: #fff;
+    color: #0098cb;
+    outline:none;
+    }
+    #forum .btn i {
+    position: relative;
+    top: 2px;
+    }
+    #forum  .menu_gauche > a {
+    padding: 20px;
+    display: block;
+    }
 
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
+    #forum  .cgauche .nav-pills > li > a .chatter-box {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    float: left;
+    position: absolute;
+    top: 50%;
+    margin-top: -5px;
+    left: 10px;
+    margin-left:-15px;
+    }
+    #forum  .cgauche .nav-pills > li  {
+    padding-left:18px;
+    font-size:15px;
+    }
+    #forum  .cgauche .nav-pills > li>a:hover{
+    background:none;
+    }
+    .home-img{
+    height:50px;
+    margin-top:40px;
+    }
+    #forum .cgauche .btn {
+    width: 100%;
+    display:block;
+    }
+    #forum .btn {
+    border: 0px;
+    border-radius: 30px;
+    }
+    .cgauche{
+    padding:0
+    }
 
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Raleway', sans-serif;
-                font-weight: 100;
-                height: 100vh;
-                margin: 0;
-            }
+@endsection
+@section('content')
+    <div id="chatter_hero">
+    <div id="chatter_hero_dimmer"></div> 
+    <img src="{{asset('assets/images/logo-light.png')}}" class="home-img">
+    </div>
+    <div class="clear-1">
+        
+    </div>
+    <div class="container" id="forum">
+        <div class="row">
+            <div class="col-md-2 cgauche">
+                <div class="menu_gauche">
+                    <button id="new_discussion_btn" class="btn btn-primary"><i class="fa  fa-comment"></i> New Discussion</button> 
+                    <a href="/forums"><b><i class=" fa-comments-o fa "></i> All Discussions</a></b> <ul class="nav nav-pills nav-stacked"><li><a href="/forums/category/introductions"><div class="chatter-box" style="background-color: rgb(52, 152, 219);"></div> Introductions</a></li> <li><a href="/forums/category/general"><div class="chatter-box" style="background-color: rgb(46, 204, 113);"></div> General</a></li> <li><a href="/forums/category/feedback"><div class="chatter-box" style="background-color: rgb(155, 89, 182);"></div> Feedback</a></li> <li><a href="/forums/category/random"><div class="chatter-box" style="background-color: rgb(230, 126, 34);"></div> Random</a></li></ul></div>
+            </div>
+            <div class="col-md-7">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Create New sujet</div>
+                    <div class="panel-body">
+                        <a href="{{ url('/sujets') }}" title="Back"><button class="btn btn-warning btn-xs"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
+                        <br />
+                        <br />
 
-            .full-height {
-                height: 100vh;
-            }
+                        @if ($errors->any())
+                            <ul class="alert alert-danger">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        @endif
 
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
+                        {!! Form::open(['url' => '/sujets', 'class' => 'form-horizontal', 'files' => true]) !!}
 
-            .position-ref {
-                position: relative;
-            }
+                        @include ('forum.sujets.form')
 
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
+                        {!! Form::close() !!}
 
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 12px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @if (Auth::check())
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ url('/login') }}">Login</a>
-                        <a href="{{ url('/register') }}">Register</a>
-                    @endif
+                    </div>
                 </div>
-            @endif
-
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
-
-                <div class="links">
-                    <a href="{{url('/home')}}">Accueil</a>
-                    <a href="{{url('/forum')}}">Forum</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
+            </div>
+            <div class="col-md-3">
+                <div class="panel panel-body">
+                    
                 </div>
             </div>
         </div>
-    </body>
-</html>
+    </div>
+@endsection
