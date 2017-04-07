@@ -25,7 +25,7 @@ class Category extends Model
      *
      * @var array
      */
-    protected $fillable = ['user_id', 'parent_id', 'order', 'name', 'color', 'slug'];
+    protected $fillable = ['user_id', 'parent_id', 'order', 'name', 'logo', 'color', 'resume', 'description', 'slug'];
 
     public function discussions()
     {

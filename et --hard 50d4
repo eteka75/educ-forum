@@ -1,0 +1,25 @@
+[33mcommit 0a9e4ec241edbaa5dc2195790b8023f9c522a9e0[m
+Author: ETEKA Wilfried <etekawilfried@gmail.com>
+Date:   Fri Apr 7 12:28:11 2017 +0200
+
+    Revert "Version à problème"
+    
+    This reverts commit baa2833e858e3ec0e375a9cd1d3af8b0a795ba0d.
+
+[33mcommit baa2833e858e3ec0e375a9cd1d3af8b0a795ba0d[m
+Author: ETEKA Wilfried <etekawilfried@gmail.com>
+Date:   Fri Apr 7 12:28:02 2017 +0200
+
+    Version à problème
+
+[33mcommit 50d4e14d10531fa0a0891d111412366784704087[m
+Author: ETEKA Wilfried <etekawilfried@gmail.com>
+Date:   Wed Apr 5 17:13:44 2017 +0200
+
+    Sauvegarde en avant le commit
+
+[33mcommit 575cd4b0997f9f2b5a938a7ba7d3c4c4ed1109a1[m
+Author: ETEKA Wilfried <etekawilfried@gmail.com>
+Date:   Sun Apr 2 12:18:38 2017 +0200
+
+    Version standard

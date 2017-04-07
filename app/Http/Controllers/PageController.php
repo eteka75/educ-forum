@@ -43,9 +43,10 @@ class PageController extends Controller
             }
         }
         //dd($discussions);
-        foreach ($discussions as $key => $value) {
+        foreach ($discussions as $key => $discussion) {
             # code...
-            //print_r(collect($value->post)->toArray());
+            dd($discussion->);
+            print_r($discussion->category);
         }
 
        //var_dump($discussions);

@@ -11,7 +11,7 @@ class Domaine extends Model
      *
      * @var string
      */
-    protected $table = 'domaines';
+    protected $table = 'forum_domaines';
 
     /**
     * The database primary key value.
