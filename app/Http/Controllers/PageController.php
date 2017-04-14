@@ -24,32 +24,32 @@ class PageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($category='',$slug='')
     {
         $total=10;
         $offset=6;
         $pagination_results=10;
         
-
-        $discussions = Discussion::with('user')->with('post')->with('postsCount')->with('category')->orderBy('created_at', 'DESC')->paginate($pagination_results);
+        //dd($slug);
+        $discussions = Discussion::with('user')->with('posts')->with('postsCount')->with('category')->orderBy('created_at', 'DESC')->paginate($pagination_results);
        
-        $categories=Category::limit(20)->orderBy('order')->get();
+        $categories=Category::all()->orderBy('order')->get();
+        $cat_list=$categories;
+        $s_categories=[0=>"== Sélectionnez le domaine de la question =="];
+        foreach ($cat_list as $key => $value) {
+        $s_categories[$value['id']]=$value['name'];
+        }
 
-        if (isset($slug)) {
+        if (isset($slug) && $slug!='') {
+
             $category = Category::where('slug', '=', $slug)->first();
             if (isset($category->id)) {
-                $discussions = Discussion::with('user')->with('post')->with('postsCount')->with('category')->where('chatter_category_id', '=', $category->id)->orderBy('created_at', 'DESC')->paginate($pagination_results);
-                dd('ll');
+                $discussions = Discussion::with('user')->with('post')->with('postsCount')->with('category')->where('categorie_id',  $category->id)->orderBy('created_at', 'DESC')->paginate($pagination_results);
+                
             }
         }
-        //dd($discussions);
-        foreach ($discussions as $key => $discussion) {
-            # code...
-            dd($discussion->);
-            print_r($discussion->category);
-        }
-
+      
        //var_dump($discussions);
-        return view('forum.index',['categories'=>$categories,'discussions'=>$discussions]);
+        return view('forum.index',['categories'=>$categories,'discussions'=>$discussions,'s_categories'=>$s_categories]);
     }
 }

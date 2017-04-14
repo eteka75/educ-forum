@@ -54,5 +54,11 @@ class Discussion extends Model
         ->selectRaw('discussion_id, count(*)-1 as total')
         ->groupBy('discussion_id');
     }
+    public function viewCount()
+    {
+        return $this->posts()
+        ->selectRaw('discussion_id, count(*)-1 as total')
+        ->groupBy('discussion_id');
+    }
 
 }
