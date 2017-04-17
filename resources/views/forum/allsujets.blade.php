@@ -16,7 +16,7 @@
 
             <div class="menu_gauche">
                 <button id="new_discussion_btn" class="btn btn-primary"><i class="fa  fa-comment"></i> Nouveau sujet</button> 
-                <a href="{{ route('showAllCategory')}}"><b><i class=" fa-comments-o fa "></i> Toutes les catégories</a></b> 
+                <a href="{{ Config::get('forum.routes.home')}}"><b><i class=" fa-comments-o fa "></i> Toutes les catégories</a></b> 
                 <ul class="nav nav-pills nav-stacked">
                     <?php if (isset($categories)) { ?>
                         @foreach($categories as $category)
@@ -27,58 +27,9 @@
             </div>
         </div>
         <div class="col-md-6">
-
-            <div class="list-card hidden  well" style="background: #FBFCFD"> 
-                <form class="form-horizontal" role="form">
-                    <h4>Quel est votre difficulté ?</h4>
-                    <div class="form-group pad0_15"  >
-                        <input class="form-control input-xs" placeholder="Ecrivez ici le problème encontré "/>
-                    </div>
-                    <div class="form-group pad0_15"  >
-                        <select class="form-control">
-                            <option>  &Equal; Sélectionnez le domaine de la question &Equal;</option>
-                            <option> Géographie </option>
-                            <option> Economie </option>
-                        </select>
-                    </div>
-                    <div class="">
-                        <div class="form-group pad0_15" >
-                            <textarea class="form-control" placeholder="Décrivez ici le problème auquel vous êtes confronté "></textarea>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-8 col-md-9">
-                                <ul class="list-inline"><li><a href="#"><i class="glyphicon glyphicon-picture"></i></a></li><li><a href="#"><i class="glyphicon glyphicon-align-center"></i></a></li><li><a href="#"><i class="glyphicon glyphicon-align-right"></i></a></li></ul>
-                            </div>
-                            <div class="col-xs-4 col-md-3">
-                                <button type="submit" class="btn btn-primary center-block" >Soumettre </button>
-                                <!--<button class="btn btn-primarys pull-right btn-xss" type="button">Diffuser</button>-->
-                            </div>
-                        </div>
-                    </div>
-                </form>
+            <div class="title-card">                
+            <h4>Tous les sujets</h4>
             </div>
-
-            @if(!Auth::guest())
-            <div class="list-card  well bgfb">
-
-                <h4>Quel est votre difficulté ?</h4>
-                <div class=" ">
-                    @if ($errors->any())
-                    <ul class="alert alert-danger">
-                        @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                    @endif
-
-                    {!! Form::open(['url' => '/sujets/new', 'class' => 'pad0 m0', 'files' => true]) !!}
-
-                    @include ('forum.sujets.form')
-
-                    {!! Form::close() !!}
-                </div>
-            </div>
-            @endif
             <div >
                 <div id="posts">
                     <ul class="discussions list-unstyled">

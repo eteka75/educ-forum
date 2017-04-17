@@ -5,11 +5,11 @@ namespace App\Http\Controllers\Forum;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Models\Discussion;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Session;
 
-class DiscussionsController extends Controller
+class CategoriesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -22,22 +22,21 @@ class DiscussionsController extends Controller
         $perPage = 25;
 
         if (!empty($keyword)) {
-            $discussions = Discussion::where('categorie_id', 'LIKE', "%$keyword%")
-				->orWhere('user_id', 'LIKE', "%$keyword%")
-				->orWhere('parent_id', 'LIKE', "%$keyword%")
-				->orWhere('title', 'LIKE', "%$keyword%")
-				->orWhere('sticky', 'LIKE', "%$keyword%")
-				->orWhere('views', 'LIKE', "%$keyword%")
-				->orWhere('answered', 'LIKE', "%$keyword%")
-				->orWhere('slug', 'LIKE', "%$keyword%")
+            $categories = Category::where('user_id', 'LIKE', "%$keyword%")
+				->orWhere('domaine_id', 'LIKE', "%$keyword%")
+				->orWhere('image', 'LIKE', "%$keyword%")
+				->orWhere('order', 'LIKE', "%$keyword%")
+				->orWhere('name', 'LIKE', "%$keyword%")
 				->orWhere('color', 'LIKE', "%$keyword%")
+				->orWhere('slug', 'LIKE', "%$keyword%")
+				->orWhere('description', 'LIKE', "%$keyword%")
 				
                 ->paginate($perPage);
         } else {
-            $discussions = Discussion::paginate($perPage);
+            $categories = Category::paginate($perPage);
         }
 
-        return view('forum.discussions.index', compact('discussions'));
+        return view('forum.categories.index', compact('categories'));
     }
 
     /**
@@ -47,7 +46,7 @@ class DiscussionsController extends Controller
      */
     public function create()
     {
-        return view('forum.discussions.create');
+        return view('forum.categories.create');
     }
 
     /**
@@ -60,16 +59,26 @@ class DiscussionsController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-			'title' => 'min:2|max:500|required',
-			'categorie_id' => 'required'
+			'name' => 'min:3|max:500|required'
 		]);
         $requestData = $request->all();
         
-        Discussion::create($requestData);
 
-        Session::flash('flash_message', 'Discussion added!');
+if ($request->hasFile('image')) {
+    $uploadPath = public_path('/uploads/');
 
-        return redirect('discussions');
+    $extension = $request->file('image')->getClientOriginalExtension();
+    $fileName = rand(11111, 99999) . '.' . $extension;
+
+    $request->file('image')->move($uploadPath, $fileName);
+    $requestData['image'] = $fileName;
+}
+
+        Category::create($requestData);
+
+        Session::flash('flash_message', 'Category added!');
+
+        return redirect('categories');
     }
 
     /**
@@ -81,9 +90,9 @@ class DiscussionsController extends Controller
      */
     public function show($id)
     {
-        $discussion = Discussion::findOrFail($id);
+        $category = Category::findOrFail($id);
 
-        return view('forum.discussions.show', compact('discussion'));
+        return view('forum.categories.show', compact('category'));
     }
 
     /**
@@ -95,9 +104,9 @@ class DiscussionsController extends Controller
      */
     public function edit($id)
     {
-        $discussion = Discussion::findOrFail($id);
+        $category = Category::findOrFail($id);
 
-        return view('forum.discussions.edit', compact('discussion'));
+        return view('forum.categories.edit', compact('category'));
     }
 
     /**
@@ -111,17 +120,27 @@ class DiscussionsController extends Controller
     public function update($id, Request $request)
     {
         $this->validate($request, [
-			'title' => 'min:10|max:500|required',
-			'categorie_id' => 'required'
+			'name' => 'min:3|max:500|required'
 		]);
         $requestData = $request->all();
         
-        $discussion = Discussion::findOrFail($id);
-        $discussion->update($requestData);
 
-        Session::flash('flash_message', 'Discussion updated!');
+if ($request->hasFile('image')) {
+    $uploadPath = public_path('/uploads/');
 
-        return redirect('discussions');
+    $extension = $request->file('image')->getClientOriginalExtension();
+    $fileName = rand(11111, 99999) . '.' . $extension;
+
+    $request->file('image')->move($uploadPath, $fileName);
+    $requestData['image'] = $fileName;
+}
+
+        $category = Category::findOrFail($id);
+        $category->update($requestData);
+
+        Session::flash('flash_message', 'Category updated!');
+
+        return redirect('categories');
     }
 
     /**
@@ -133,10 +152,10 @@ class DiscussionsController extends Controller
      */
     public function destroy($id)
     {
-        Discussion::destroy($id);
+        Category::destroy($id);
 
-        Session::flash('flash_message', 'Discussion deleted!');
+        Session::flash('flash_message', 'Category deleted!');
 
-        return redirect('discussions');
+        return redirect('categories');
     }
 }

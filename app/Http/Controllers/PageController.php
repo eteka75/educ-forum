@@ -28,12 +28,12 @@ class PageController extends Controller
     {
         $total=10;
         $offset=6;
-        $pagination_results=10;
+        $pagination_results= config('forum.paginate.num_of_results');;
         
-        //dd($slug);
         $discussions = Discussion::with('user')->with('posts')->with('postsCount')->with('category')->orderBy('created_at', 'DESC')->paginate($pagination_results);
        
-        $categories=Category::all()->orderBy('order')->get();
+        $categories=Category::all();
+//        dd($discussions);
         $cat_list=$categories;
         $s_categories=[0=>"== Sélectionnez le domaine de la question =="];
         foreach ($cat_list as $key => $value) {
@@ -49,7 +49,7 @@ class PageController extends Controller
             }
         }
       
-       //var_dump($discussions);
-        return view('forum.index',['categories'=>$categories,'discussions'=>$discussions,'s_categories'=>$s_categories]);
+//       var_dump($discussions);
+        return view('forum.index',['categories'=>$categories,'discussions'=>$discussions,'s_categories'=>$s_categories,'slug'=>$slug]);
     }
 }

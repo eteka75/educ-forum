@@ -2,9 +2,11 @@
 
 return [
     'user_id' => 'User Id',
-'parent_id' => 'Parent Id',
+'domaine_id' => 'Domaine Id',
+'image' => 'Image',
 'order' => 'Order',
 'name' => 'Name',
 'color' => 'Color',
 'slug' => 'Slug',
+'description' => 'Description',
 ];

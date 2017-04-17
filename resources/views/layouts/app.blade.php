@@ -16,17 +16,24 @@
         <!--<link href="{{ asset('css/style_gplus.css') }}" rel="stylesheet">-->
         <link href="{{ asset('css/style.css') }}" rel="stylesheet">
         <!--<link href="{{ asset('assets/css/chatter.css') }}" rel="stylesheet">-->
-          <script src="{{ asset('js/jquery.min.js') }}"></script>
+        <script src="{{ asset('js/jquery.min.js') }}"></script>
         <style type="text/css">
             body{
                 background: #F0F1F4;
-                background: #eceff1;
-            }
-            html, body {
+                background: #f1f1f1;
+                /*background: #eceff1;*/
                 height: 100%;
                 /*font-family:verdana,arial,sans-serif;*/
                 color:#555555;
+                font-family: 'open sans',sans-serif, 'Opens sans','Source sans Pro','Trebuchet Ms',serif;
             }
+            .micone li i{
+                font-size: 20px;
+                line-height: 20px;
+                float: left;
+                padding-right: 5px;
+            }
+            .mtop5{margin-top: 5px;}
             .panel-default .panel-heading,.heading {
                 background-color: #f9fafb;
                 color: #555555;
@@ -38,7 +45,11 @@
                 font-family:Arial,sans-serif;
                 font-size:13px;
             }
-
+            .discussions .panel a:hover{color:#111111}
+            .discussions .panel a{
+                color: #243238;
+                text-decoration:none;
+            }
             .avatar_circle {
                 width: 60px;
                 height: 60px;
@@ -50,9 +61,39 @@
                 color: #fff;
                 font-size: 20px;
             }
+            #username a:hover{background: #0061d5;color: #ffffff;}
+            #username ul a{
+                padding: 8px 10px;
+            }
+            #username>a{
+                max-width: 150px;
+                white-space: nowrap;
+                text-overflow:ellipsis;
+                overflow: hidden;
+                padding: 5px 10px;
+                margin: 10px auto;
+                border-radius: 2px;
+                color: inherit;
+            }
+            #username .dropdown-menu{
+                margin-top: -10px;
+                border-width: 0;
+                padding-top: 0;
+                padding-bottom: 0;
+            }
+            #search-group .form-control:focus{box-shadow:none;background: #fff; }
+            #search-group .input-group-btn .btn,
+            #search-group .form-control{
+                border:1px solid #eee;
+                background: #f5f5f5;
+                outline: none;
+                /*border-radius: 15px 0 0 15px;*/
+            }
+            #search-group .input-group-btn .btn{border-left-width: 0px}
             div.middle_title{
                 padding: 0px;
-                color: #111;
+                color: #1d2129;
+                color: #1d1d1d;
                 -webkit-transition: color 0.3s ease;
                 transition: color 0.3s ease;
                 font-size: 18px;
@@ -60,24 +101,40 @@
                 padding-top: 10px;
                 padding-bottom: 10px;
                 display: block;
-
+                font-family: Georgia, Lucida Grande, Tahoma, Verdana, Arial, sans-serif;
+                font-size: 18px;
+                font-weight: 500;
+                line-height: 22px;
+                padding: 0;
+                margin-bottom: 5px;
+                max-height: 110px;
+                overflow: hidden;
+                word-wrap: break-word;
                 /*color: #4772d9;*/
                 /*                font-family: Times,serif;*/
             }
             .bgfb{background: #FBFCFD}
+            .bgf9{background: #f9fafb}
+            .post-footer>div{border-top: 1px solid #ddd;}
             p.middle_content a{
                 font-size: 12px;
-                color:#555 !important
+                color:#333333 !important;
+                font-family: Helvetica, Arial, sans-serif;
+                line-height: 16px;                
+            }
+            p.middle_content{
+                max-height: 90px;
+                overflow: hidden;
             }
             .chatter_cat{
-                background: #ccc;
+                /*                background: #ccc;
+                                color: #fff;*/
                 border-radius: 30px;
                 font-weight: bold;
                 font-size: 10px;
                 padding: 3px 7px;
                 display: inline;
-                color: #fff;
-                text-shadow:0 1px 0px #000;
+                /*text-shadow:0 1px 0px #000;*/
                 position: relative;
                 top: -2px;
             }
@@ -85,7 +142,7 @@
             .pad0_15{padding:0 15px}
             .pad15_0{padding: 15px 0}
             .padtop10{padding-top: 0px}
-            .pad-panel{padding: 0px  15px 15px}
+            .pad-panel{padding: 0px  15px 5px}
             .navbar{
                 margin-bottom: 0;
 
@@ -101,12 +158,12 @@
                 border-bottom: 1px solid #eeeeee;
                 border-bottom: 0px solid rgba(0,0,0,.0975);
                 margin-bottom: 20px;
-                background: #31708f;
+                /*background: #31708f;*/
                 padding: 10px;
                 box-shadow: 0 1px 3px 0 rgba(44,62,80,0.15);
                 /*background-color: #fff;*/
             }
-            .navbar-default .navbar-brand,.navbar-default .navbar-nav>li>a,.navbar a{color: #fff;}
+            /*.navbar-default .navbar-brand,.navbar-default .navbar-nav>li>a,.navbar a{color: #fff;}*/
 
             .categ-inline{
                 margin-left: -2px;
@@ -119,21 +176,23 @@
             }
             .pad0{padding: 0}
             .m0{margin: 0}
+        </style>
+        <style type="text/css">
             @yield('css')
         </style>
         <!-- Scripts -->
         <script>
-            window.Laravel = {!! json_encode([
-                    'csrfToken' => csrf_token(),
-            ]) !!}
-            ;
+window.Laravel = {!! json_encode([
+        'csrfToken' => csrf_token(),
+]) !!}
+;
         </script>
     </head>
     <body>
         <div id="app">
             <nav class="navbar navbar-default navbar-static-top">
                 <div class="container">
-                    <div class="navbar-header col-sm-1 bg-info">
+                    <div class="navbar-header ">
 
                         <!-- Collapsed Hamburger -->
                         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
@@ -149,77 +208,132 @@
                         </a>
                     </div>
 
-                    <div class="collapse navbar-collapse col-sm-4" id="app-navbar-collapse">
+                    <div class="collapse navbar-collapse " id="app-navbar-collapse">
+                        <div class="" >
 
 
-                        <!-- Right Side Of Navbar -->
-                        <ul class="nav navbar-nav navbar-left">
-                            <li>
-                                <a href="#">Mes sujets</a>
-                            </li>
-                            <li>
-                                <a href="#">Mes discussions</a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div>
-                        <ul class="nav navbar-nav navbar-right">
-                            <!-- Authentication Links -->
-                            @if (Auth::guest())
-                            <li><a href="{{ route('login') }}">Login</a></li>
-                            <li><a href="{{ route('register') }}">Register</a></li>
-                            <li><a href="{{ route('register') }}">Register</a></li>
-                            @else
-
-                            <li>
-                                <form class="navbar-form" role="search">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Search" name="q">
-                                        <div class="input-group-btn">
-                                            <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </li>
-                            <li>
-                                <a href="#"><i class="fa fa-facebook"></i></a>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    {{ Auth::user()->name }} <span class="caret"></span>
-                                </a>
-
-                                <ul class="dropdown-menu" role="menu">
-                                    <li>
-                                        <a href="{{ route('logout') }}"
-                                           onclick="event.preventDefault();
-                                                   document.getElementById('logout-form').submit();">
-                                            Logout
-                                        </a>
-
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                        </form>
-                                    </li>
-                                    <li>
-                                        <a href="#">Profil</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Paramètres</a>
-                                    </li>
-                                </ul>
-                            </li>
+                            <!-- Right Side Of Navbar -->
+                            @if (Auth::user())
+                            <ul class="nav navbar-nav navbar-left micone">
+                                <li data-toggle="tooltip" data-placement="bottom" title="Voir tous les sujets">
+                                    <a href="{{route("showAllSujets")}}"><i class="fa  fa-retweet"></i> <span class="hidden_visible-lg">Tous les sujets</span></a>
+                                </li>
+                                <li data-toggle="tooltip" data-placement="bottom" title="Voir tous mes sujets">
+                                    <a href="{{route("showLoginUserSujets")}}"><i class="fa fa-question-circle"></i> <span class="hidden_visible-lg ">Sujets</span></a>
+                                </li>
+                                <li data-toggle="tooltip" data-placement="bottom" title="Voir mes discussions ">
+                                    <a href="{{route("showUserDiscussions")}}"><i class="fa fa-comment-o"></i> <span class="hidden_visible-lg">Discussions</span></a>
+                                </li>
+                                <li data-toggle="tooltip" data-placement="bottom" title="Voir mes sujets favoris">
+                                    <a href="{{route("showFavorisSujets")}}"><i class="fa fa-star-o"></i> <span class="hidden_visible-lg">Favoris</span></a>
+                                </li>
+                            </ul>
                             @endif
-                        </ul>
+                            <ul class="nav navbar-nav navbar-right " >
+                                <!-- Authentication Links -->
+                                <li>
+                                    <form class="navbar-form" action="search" method="GET" role="search">
+                                        <div class="input-group" id="search-group">
+                                            <input type="text" name="query" class="form-control" placeholder="Rechercher un sujet ..." name="q">
+                                            <div class="input-group-btn">
+                                                <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </li>
+                                @if (Auth::guest())
+                                <li><a  href="{{ route('login') }}">Connexion</a></li>
+                                <li><a href="{{ route('register') }}">Créer un compte</a></li>
+                                @else
+
+
+                                <li data-toggle="tooltip" data-placement="bottom" id="add_sujet" title="Ajouter un nouveau sujet">
+                                    <!--<button type="button" class="btn btn-default" >Tooltip on left</button>-->
+                                    <a href="{{route('NewSujet')}}" class="btn " ><i  class="fa fa-plus "></i><span class="hidden_visible-xs visible-xs"> Ajouter un sujet</span></a>
+                                </li>
+                                <li class="dropdown" id="username">
+                                    <a href="#" class="dropdown-toggle"  data-toggle="dropdown" role="button" aria-expanded="false">
+                                        {{ Auth::user()->name }} 
+                                        <span class="fa fa-angle-down"></span>
+                                    </a>
+
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li>
+                                            <a href="{{route('showProfil')}}"><i class="fa fa-user-circle"></i> Profil</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{route('userNotifications')}}"><i class="fa  fa-bell-o"></i> Notifications</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{route('SettingProfil')}}"><i class="fa fa-cogs"></i> Paramètres</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{route('FaqForum')}}"><i class="fa fa-institution"></i> FAQ</a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li class="">
+                                            <a class="bold text-danger" href="{{ route('logout') }}"
+                                               onclick="event.preventDefault();
+                                                       document.getElementById('logout-form').submit();">
+                                                <i class="fa fa-sign-out"></i>  Déconnexion
+                                            </a>
+
+                                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                                {{ csrf_field() }}
+                                            </form>
+                                        </li>
+
+                                    </ul>
+                                </li>
+                                @endif
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </nav>
-
+            <div class='container'>
+                <div class='row'>
+                    <div class='col-sm-12 col-sm-offset-0'>
+                        @if(Session::has('flash_message'))
+                        <p class="alert alert-info">{!! Session::get('flash_message') !!}</p>
+                        @endif
+                        @if(Session::has('info'))
+                        <p class="alert alert-info">{!! Session::get('info') !!}</p>
+                        @endif
+                        @if(Session::has('danger'))
+                        <p class="alert alert-danger">{!! Session::get('danger') !!}</p>
+                        @endif
+                        @if(Session::has('warning'))
+                        <p class="alert alert-warning">{!! Session::get('warning') !!}</p>
+                        @endif
+                    </div>
+                </div>
+            </div>
             @yield('content')
         </div>
 
         <!-- Scripts -->
         <script src="{{ asset('js/app.js') }}"></script>
+        <script src="{{ asset('js/index.js') }}"></script>
+        <!--<script type="text/javascript" src="{{asset('js/plugins/jquery.min.js')}}"></script>-->
+        <!--<script type="text/javascript" src="{{asset('js/plugins/jquery.pjax.js')}}"></script>-->
+        <script type="text/javascript">
+                                                   /* $('a').attr('data-pjax',"#app");
+                                                    $('a').pjax(undefined, {
+                                                    error: function(jqXHR, textStatus, errorThrown) {
+                                                    alert("Could not use pjax!\n\n" + jqXHR + "\n\n" + textStatus + "\n\n" + errorThrown);
+                                                    }
+                                                    });
+                                                    
+                                                    $('body').bind('pjax:start', function(xhr, options) {
+                                                    $("#app").css({"opacity":'.5'})
+                                                    $(options.container).fadeOut("2000", function() {
+                                                    alert("Faded out");
+                                                    });
+                                                    }).bind('pjax:end', function(xhr, options) {
+                                                    $("#app").animate({"opacity":'.5'},10000)
+                                                    $(options.container).hide("slow");
+                                                    });*/
+        </script>
     </body>
 </html>

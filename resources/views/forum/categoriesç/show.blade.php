@@ -33,7 +33,7 @@
                                     <tr>
                                         <th>ID</th><td>{{ $category->id }}</td>
                                     </tr>
-                                    <tr><th> {{ trans('categories.user_id') }} </th><td> {{ $category->user_id }} </td></tr><tr><th> {{ trans('categories.domaine_id') }} </th><td> {{ $category->domaine_id }} </td></tr><tr><th> {{ trans('categories.image') }} </th><td> {{ $category->image }} </td></tr>
+                                    <tr><th> {{ trans('categories.user_id') }} </th><td> {{ $category->user_id }} </td></tr><tr><th> {{ trans('categories.parent_id') }} </th><td> {{ $category->parent_id }} </td></tr><tr><th> {{ trans('categories.order') }} </th><td> {{ $category->order }} </td></tr>
                                 </tbody>
                             </table>
                         </div>

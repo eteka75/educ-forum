@@ -26,14 +26,14 @@
 </div>
 <div class="">
     <div class="row">
-        <div class="col-xs-8 col-md-9">
+        <div class="col-xs-7 col-md-9">
             <ul class="list-inline" style="font-size: 18px">
                     <li><a class="text-muted" href="#"><i class="glyphicon glyphicon-picture"></i></a></li>
                     <li><a class="text-muted" href="#"><i class="glyphicon glyphicon-pushpin"></i></a></li>
                     <li><a class="text-muted" href="#"><i class="glyphicon glyphicon-star "></i></a></li>
             </ul>
         </div>
-        <div class="col-xs-4 col-md-3">
+        <div class="col-xs-5 col-md-3">
             <button type="submit" class="btn btn-primary center-block" >Soumettre </button>
             <!--<button class="btn btn-primarys pull-right btn-xss" type="button">Diffuser</button>-->
         </div>

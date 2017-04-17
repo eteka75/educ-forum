@@ -4,32 +4,31 @@ namespace App\Http\Controllers\Forum;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Session;
 
-class CategoriesController extends Controller
-{
+class CategoriesController extends Controller {
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\View\View
      */
-    public function index(Request $request)
-    {
+    public function index(Request $request) {
         $keyword = $request->get('search');
         $perPage = 25;
 
         if (!empty($keyword)) {
             $categories = Category::where('user_id', 'LIKE', "%$keyword%")
-				->orWhere('parent_id', 'LIKE', "%$keyword%")
-				->orWhere('order', 'LIKE', "%$keyword%")
-				->orWhere('name', 'LIKE', "%$keyword%")
-				->orWhere('color', 'LIKE', "%$keyword%")
-				->orWhere('slug', 'LIKE', "%$keyword%")
-				
-                ->paginate($perPage);
+                    ->orWhere('domaine_id', 'LIKE', "%$keyword%")
+                    ->orWhere('image', 'LIKE', "%$keyword%")
+                    ->orWhere('order', 'LIKE', "%$keyword%")
+                    ->orWhere('name', 'LIKE', "%$keyword%")
+                    ->orWhere('color', 'LIKE', "%$keyword%")
+                    ->orWhere('slug', 'LIKE', "%$keyword%")
+                    ->orWhere('description', 'LIKE', "%$keyword%")
+                    ->paginate($perPage);
         } else {
             $categories = Category::paginate($perPage);
         }
@@ -42,8 +41,7 @@ class CategoriesController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function create()
-    {
+    public function create() {
         return view('forum.categories.create');
     }
 
@@ -54,13 +52,23 @@ class CategoriesController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $this->validate($request, [
-			'name' => 'min:10|max:500|required'
-		]);
+            'name' => 'min:3|max:250|required'
+        ]);
         $requestData = $request->all();
-        
+        $requestData['slug'] = str_slug($requestData['slug']);
+
+        if ($request->hasFile('image')) {
+            $uploadPath = public_path('/uploads/' . config("forum.dossiers.category"));
+
+            $extension = $request->file('image')->getClientOriginalExtension();
+            $fileName = rand(11111, 99999) . '.' . $extension;
+
+            $request->file('image')->move($uploadPath, $fileName);
+            $requestData['image'] = $fileName;
+        }
+
         Category::create($requestData);
 
         Session::flash('flash_message', 'Category added!');
@@ -75,8 +83,7 @@ class CategoriesController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function show($id)
-    {
+    public function show($id) {
         $category = Category::findOrFail($id);
 
         return view('forum.categories.show', compact('category'));
@@ -89,8 +96,7 @@ class CategoriesController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function edit($id)
-    {
+    public function edit($id) {
         $category = Category::findOrFail($id);
 
         return view('forum.categories.edit', compact('category'));
@@ -104,14 +110,27 @@ class CategoriesController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function update($id, Request $request)
-    {
+    public function update($id, Request $request) {
         $this->validate($request, [
-			'name' => 'min:10|max:500|required'
-		]);
+            'name' => 'min:3|max:500|required'
+        ]);
         $requestData = $request->all();
-        
+
+
+        if ($request->hasFile('image')) {
+           $uploadPath = public_path('/uploads/' . config("forum.dossiers.category"));
+
+            $extension = $request->file('image')->getClientOriginalExtension();
+            $fileName = rand(11111, 99999) . '.' . $extension;
+
+            $request->file('image')->move($uploadPath, $fileName);
+            
+            $requestData['image'] = $fileName;
+        }
+
         $category = Category::findOrFail($id);
+         $requestData['slug'] = $category['slug'];
+
         $category->update($requestData);
 
         Session::flash('flash_message', 'Category updated!');
@@ -126,12 +145,12 @@ class CategoriesController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         Category::destroy($id);
 
         Session::flash('flash_message', 'Category deleted!');
 
         return redirect('categories');
     }
+
 }

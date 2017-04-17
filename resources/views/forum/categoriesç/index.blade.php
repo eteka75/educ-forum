@@ -30,14 +30,14 @@
                             <table class="table table-borderless">
                                 <thead>
                                     <tr>
-                                        <th>ID</th><th>{{ trans('categories.user_id') }}</th><th>{{ trans('categories.domaine_id') }}</th><th>{{ trans('categories.image') }}</th><th>Actions</th>
+                                        <th>ID</th><th>{{ trans('categories.user_id') }}</th><th>{{ trans('categories.parent_id') }}</th><th>{{ trans('categories.order') }}</th><th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($categories as $item)
                                     <tr>
                                         <td>{{ $item->id }}</td>
-                                        <td>{{ $item->user_id }}</td><td>{{ $item->domaine_id }}</td><td>{{ $item->image }}</td>
+                                        <td>{{ $item->user_id }}</td><td>{{ $item->parent_id }}</td><td>{{ $item->order }}</td>
                                         <td>
                                             <a href="{{ url('/categories/' . $item->id) }}" title="View Category"><button class="btn btn-info btn-xs"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>
                                             <a href="{{ url('/categories/' . $item->id . '/edit') }}" title="Edit Category"><button class="btn btn-primary btn-xs"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>

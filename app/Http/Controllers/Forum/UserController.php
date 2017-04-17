@@ -8,7 +8,7 @@ use App\Models\Post;
 use App\Http\Controllers\Controller;
 use App\Models\Discussion as Discussion;
 use Auth;
-
+use App;
 class UserController extends Controller {
 
     /**
@@ -17,7 +17,7 @@ class UserController extends Controller {
      * @return void
      */
     public function __construct() {
-        $this->middleware('auth');
+//        $this->middleware('auth');
     }
 
     /**
@@ -25,10 +25,28 @@ class UserController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function profil($category = '') {
-        //dd(Auth::user());
-        //return "Profil";
-        return view('forum.user_profil', compact('discussion', 'posts', 'chatter_editor'));
+    public function profil($id = '') {
+        
+        if ($id >= 1) {
+            $user = \App\User::where('id', $id)->first();
+            if (!$user) {
+                abort(404);
+            }
+        } else {
+            if (Auth::user()) {
+                $user = Auth::user();
+            } else {
+                abort(404);
+            }
+        }
+//        dd($user);
+        $da=config("app.name",$user->name.'');
+        $pagination_results= config('forum.paginate.num_of_results');;
+        
+        $discussions = Discussion::where('user_id',$user->id)->with('user')->with('posts')->with('postsCount')->with('category')->orderBy('created_at', 'DESC')->paginate($pagination_results);
+       
+        
+        return view('forum.user_profil', compact('discussions', 'user'));
     }
 
     /**

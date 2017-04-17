@@ -11,7 +11,7 @@ class Category extends Model
      *
      * @var string
      */
-    protected $table = 'forum_categories';
+    protected $table = 'categories';
 
     /**
     * The database primary key value.
@@ -25,10 +25,7 @@ class Category extends Model
      *
      * @var array
      */
-    protected $fillable = ['user_id', 'parent_id', 'order', 'name', 'logo', 'color', 'resume', 'description', 'slug'];
+    protected $fillable = ['user_id', 'domaine_id', 'image', 'order', 'name', 'color', 'slug', 'description'];
 
-    public function discussions()
-    {
-        return $this->hasMany('App\Models\Discussion');
-    }
+    
 }

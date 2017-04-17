@@ -13,9 +13,20 @@ return [
     */
 
     'routes' => [
+        'all'       => 'all',
         'home'       => 'forums',
         'discussion' => 'discussion',
         'category'   => 'category',
+        'sujets'   => 'sujets',
+        'post'       => 'posts',
+        'register'   => 'register',
+        'login'      => 'login',
+    ],
+    'dossiers' => [
+        'user'       => 'users',
+        'discussion' => 'discussion',
+        'category'   => 'categories',
+        'sujets'   => 'sujets',
         'post'       => 'posts',
         'register'   => 'register',
         'login'      => 'login',
@@ -244,7 +255,7 @@ return [
     */
 
     'paginate' => [
-        'num_of_results' => 10,
+        'num_of_results' => 3,
         'num_of_ajaxsearch' => 3,
     ],
 
