@@ -19,6 +19,18 @@ class DataHelper extends Model
 
         return substr($code, 0, 6);
     }
+    public static function TextColor($color)
+    {
+         $textColor='';
+        for($i=0;$i<strlen($color);$i++){
+            if(is_numeric($color[$i])){
+                $textColor.=8-$color[$i];
+            }else{
+                 $textColor.='A';
+            }
+        }
+        return $textColor;
+    }
 
     /**
      * User link.
@@ -68,6 +80,14 @@ class DataHelper extends Model
 
         return substr($url, $start, $length);
     }
+    /**
+     * Url parameter.
+     *
+     * @param string $url
+     *
+     * @return string
+     */
+    
 
     /**
      * This function will demote H1 to H2, H2 to H3, H4 to H5, etc.

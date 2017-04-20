@@ -13,7 +13,7 @@
 <div class="container" id="forum">
     <div class="row">
         <div class="col-md-9 ">
-            <h3 class=" light">Les catégories</h3>
+            <h3 class="page-title">Les catégories</h3>
             <div class="row">
                 @foreach($categories as $category)
 
@@ -22,23 +22,29 @@
                         <?php
                         $image = ('uploads/users/img.jpg');
                         if (isset($category->image) && $category->image != '') {
-                             $urlimg = ('uploads/' . config('forum.dossiers.category') . '/' . $category->image);
+                            $urlimg = ('uploads/' . config('forum.dossiers.category') . '/' . $category->image);
                             if (is_file($urlimg)) {
-                              $image = $urlimg;
+                                $image = $urlimg;
                             }
                         }
                         ?>
                         <div class="img-div-cat">
-                        <img  src="{{asset($image)}}" class="img-responsive" alt="Categorie" />
+                            <img  src="{{asset($image)}}" class="img-responsive" alt="Categorie" />
                         </div>
                         <div class="panel-body foot-div-cat">
                             <h5 class=" m5_0"><a class="no-link" href="{{route('categorie',$category->slug)}}">{{$category->name}}</a> <span class="text-primary pull-right"><i  class="fa fa-comments "></i> {{$category->discussions()->count()}}</span></h5>
 
                         </div>
+
                     </div>
                 </div>
 
                 @endforeach
+                <div class="col-sm-12 text-center">
+                    <div id="pagination">
+                        {{$categories->links()}}
+                    </div>
+                </div>
             </div>
         </div>
 

@@ -255,8 +255,11 @@ return [
     */
 
     'paginate' => [
-        'num_of_results' => 3,
+        'num_of_results' => 4,
+        'num_of_cat_results' => 12, /*4x3*/
         'num_of_ajaxsearch' => 3,
+        'num_of_posts' => 3,
+        'posts_num_right' =>12 ,
     ],
 
     /*

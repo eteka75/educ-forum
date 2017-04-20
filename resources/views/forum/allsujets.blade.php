@@ -28,7 +28,14 @@
         </div>
         <div class="col-md-6">
             <div class="title-card">                
-            <h4>Tous les sujets</h4>
+            <div class="tab-v1">
+                        <ul class="nav nav-tabs ">
+                            <li class="active"><a href="#alert-1" data-toggle="tab" aria-expanded="true">Tous les sujets</a></li>
+                            <!--<li ><a href="#alert-2" data-toggle="tab" aria-expanded="false">Top des sujets</a></li>-->
+                            <!--<li><a href="#alert-3" data-toggle="tab">Cette semaine</a></li>-->
+                            <!--<li><a href="#alert-3" data-toggle="tab">Dans ce mois</a></li>-->
+                        </ul> 
+                    </div>
             </div>
             <div >
                 <div id="posts">
@@ -47,14 +54,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="panelpanel-body ">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search words with regular expressions ...">
-                    <span class="input-group-btn">
-                        <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
-                    </span>
-                </div>
-            </div>
+            @include('includes.right_list_posts');
         </div>
     </div>
 </div>

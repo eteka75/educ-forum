@@ -8,51 +8,110 @@
     <div class="container">
         <div class="row">
 
+
             <div class="col-md-9">
-                <h3>
-                    <i class="fa fa-question-circle"></i> {{$discussion->title}}
+                <h3 class="page-title">
+                    {{$discussion->title}}
+
                     <span class="chatter_head_details pull-right"> {{ Config::get('chatter.titles.category') }}<a class="chatter_cat" href="/{{ Config::get('forum.routes.home') }}/{{ Config::get('forum.routes.category') }}/{{ $discussion->category->slug }}" style="background-color:{{ $discussion->category->color }}">{{ $discussion->category->name }}</a></span>
+                    <br>
+                    <?php
+                    setlocale(LC_TIME, 'French');
+                    ?>
+                    <small class="text-sm">Par : <span class="text-muted bold"> {{$discussion->user()->first()->name}},</span> le {{ \Carbon\Carbon::createFromTimeStamp(strtotime($discussion->created_at))->formatLocalized('%A %d %B %Y')}}</small>
                 </h3>
-                <div class="tab-v2 margin-bottom-40">
-                    <ul class="nav nav-tabs">
-                        <li class="active"><a href="#alert-1" data-toggle="tab" aria-expanded="true">Discussions</a></li>
-                        <!--<li ><a href="#alert-2" data-toggle="tab" aria-expanded="false">Discussions</a></li>-->
-                        <!--<li><a href="#alert-3" data-toggle="tab">Notes</a></li>-->
-                    </ul>                
-                    <div class="alert alert-warning no-border">
-                        <!-- Alert Messages -->                        
-                        <div class="tab-pane fade in active hupsize-1 "  id="alert-1">
-                            <div >
-                                <?php
-                                $body = $discussion->post;
-                                $discussion_body = '';
-                                if (count($body)) {
-                                    $discussion_body = $body[0]["body"];
-                                };
-                                ?>
-                                {{$discussion_body}}
+            </div>
+            <div class="col-md-9">
+                <div class="td-default-sharing ">
+                    <ul class="list-inline ">
+                        <li>
+                            <a class="td-social-sharing-buttons td-social-facebook" href="https://www.facebook.com/sharer.php?u={{URL::to('/').'/'.Request::path()}}" onclick="window.open(this.href, 'mywin', 'left=50,top=50,width=600,height=350,toolbar=0'); return false;">
+                                <i class="fa fa-facebook"></i>
+                                <div class="td-social-but-text hidden-sm hidden-xs">Partager sur Facebook</div>
+                            </a> 
+                        </li>
+                        <li>
+                            <a class="td-social-sharing-buttons td-social-twitter" href="https://twitter.com/intent/tweet?text={{$discussion->title}}&amp;url={{URL::to('/').'/'.Request::path()}}&amp;via=FORUM+ETUDIANT+WEB" onclick="window.open(this.href, 'mywin', 'left=50,top=50,width=600,height=400,toolbar=0'); return false;">
+                                <i class="fa fa-twitter"></i>
+                                <div class="td-social-but-text hidden-sm hidden-xs">Poster sur Twitter</div>
+                            </a> 
+                        </li>
+                        <li>
+                            <a class="td-social-sharing-buttons td-social-google" href="https://plus.google.com/share?url={{URL::to('/').'/'.Request::path()}}" onclick="window.open(this.href, 'mywin', 'left=50,top=50,width=600,height=350,toolbar=0'); return false;">
+                                <i class="fa fa-google-plus-official"></i>
+                                <div class="td-social-but-text hidden-sm hidden-xs">Poster sur Google plus</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="td-social-sharing-buttons visible-xs td-social-whatsapp" href="whatsapp://send?text={{$discussion->title}}{{URL::to('/').'/'.Request::path()}}">
+                                <i class="fa fa-whatsapp"></i>
+                            </a>
+                        </li>
+                    </ul>
 
-                            </div>               
-                        </div>
-                        <!-- End Alert Messages -->                        
 
-                        <!-- Links in Alerts -->
+
+
+
+                </div>
+                @foreach($posts as $post)
+                <?php
+                $body = $discussion->post;
+                $discussion_body = '';
+                $discussion_id = 0;
+                if (count($body)) {
+                    $discussion_body = $body[0]["body"];
+                    $discussion_id = $body[0]["id"];
+                }
+                ?>
+                @if($post->id==$discussion_id)
+
+
+                <div class="alert alert-default bg-info ">
+                    <!-- Alert Messages -->                        
+                    <div class="tab-pane fade in active hupsize-1 "  id="alert-1">
+                        <p class="text-muted text-xs">Détails sur le problème</p>
+                        <div >
+
+                            {{$discussion_body}}
+
+                        </div>               
                     </div>
-                    @for($i=0;$i<10;$i++)
-                    <div class="col-sm-10">
+                    <!-- End Alert Messages -->                        
+
+                    <!-- Links in Alerts -->
+                </div>
+                @if($discussion->postsCount[0]->total>0)
+                <div class="tab-v2margin-bottom-40">
+                    <ul class="navnav-tabs list-unstyled ">
+                        <li class="active"><a class="text-muted bold" href="#alert-1" data-toggle="tab" aria-expanded="true">Réponses ({{$discussion->postsCount[0]->total}})</a></li>
+
+                    </ul>    
+                </div>
+                @else
+                <div class="clear-o text-center">
+                    <h1 class="huge-3 text-muted-0 text-muted"><i class="fa fa-pencil-square-o"></i></h1>
+                    <p>Aucune réponse pour le moment</p>
+                </div>
+                @endif
+                @else
+
+                <div class="clearfix">
+                    <div class="col-sm-10" data-id="{{ $post->id }}" data-markdown="{{ $post->markdown }}">
                         <div class="row comment-cadre">
                             <div class="col-xs-3 col-sm-1 pad0">
-                                <img src="{{asset('uploads/users/img.jpg')}}" class="comment-img img-circles" />
+                                <img src="{{asset('uploads/users/img.jpg')}}" class="comment-img img-circle" />
                             </div>
-                            <div class="col-xs-9 text-justify  col-sm-10">
-                                <h5 class="m0">ETEKA Wilfried</h5>
-                                <p class="text-muted">Il y a 3 jours</p>
-                            </div>
-                            <div class="col-sm-12 pad0">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                            <div class="col-xs-9 text-justify  col-sm-11">
+                                <h5 class="m0"><a class="no-links" href="{{url(config('forum.routes.home').'/profil/'.$post->user()->first()->id)}}">{{$post->user()->first()->name}}</a></h5>
+                                <p class="text-muted text-sm">{{\Carbon\Carbon::createFromTimeStamp(strtotime($post->created_at))->diffForHumans()}}</p>
+
+                                <p class="text-md" style="">
+                                    {{$post->body}}
+                                </p>
 
                             </div>
+
                         </div>
 
                     </div>
@@ -68,379 +127,114 @@
                                 <a class="btn btn-block no-link" href="#"><i class="fa fa-arrow-down "></i></a>
                             </div>
                         </div>
-                        <ul class="list-unstyled">
-                            <li>
-                                <a class="btn btn-block text-muted" href="#"><i class="fa fa-share-alt"></i> Partager</a>
-                            </li>
-                            <li>
-                                <a class="btn btn-block text-danger" href="#"><i class="fa  fa-twitch"></i> Signaler</a>
-                            </li>
-                        </ul>
-                    </div>
-                    @endfor
-                    <div class="col-sm-12 pad0">
-                        <h4 class="m0 pad15_0">Répondre au sujet</h4>
-                    </div>
-                    <div class="col-sm-10">
-                        <div class="row comment-cadre  bgfb">
-                            <div class="col-xs-3 col-sm-1 pad0">
-                                <img src="{{asset('uploads/users/img.jpg')}}" class="comment-img img-circles" />
-                            </div>
-                            <div class="col-xs-9 text-justify  col-sm-10">
-                                <h5 class="m0">ETEKA Wilfried</h5>
-                                <p class="text-muted">Il y a 3 jours</p>
-                            </div>
-                            <div class="col-sm-12 pad0">
-                                <textarea class="form-control no-border no-bg no-shad m5_0" placeholder="Laisser ici votre réponse" cols="8" ></textarea>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="col-sm-2 comment-cadre-actions">
                         <div class="row">
-                            <div class="col-sm-12 text-center">
-                                <h3 class="m0 pad15">22</h3>
+                            <div class="col-xs-6 ">
+                                <a class="btn btn-block text-muted" title="Partager" href="#"><i class="fa fa-share-alt"></i> </a>
                             </div>
-                            <div class="col-xs-6 cover-like">
-                                <a class="btn btn-block no-link" href="#"><i class="fa fa-arrow-up "></i></a>
-                            </div>
-                            <div class="col-xs-6 cover-dislike">
-                                <a class="btn btn-block no-link" href="#"><i class="fa fa-arrow-down "></i></a>
+                            <div class="col-xs-6 ">
+                                <a class="btn btn-block text-danger"  title="Signaler" href="#"><i class="fa  fa-twitch"></i> </a>
                             </div>
                         </div>
-                        <ul class="list-unstyled">
-                            <li>
-                                <a class="btn btn-block text-muted" href="#"><i class="fa fa-share-alt"></i> Partager</a>
-                            </li>
-                            <li>
-                                <a class="btn btn-block text-danger" href="#"><i class="fa  fa-twitch"></i> Signaler</a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="col-sm-12">
-                        <hr>
-                        <div class="row">
-                            <?php
-                            $posts = $discussion->posts()->paginate(10);
-//                            dd($posts);
-                            ?>
-                            @if(count($posts)>0)
-                            <ul>
-
-                                @foreach($posts as $post)
-
-                                <li data-id="{{ $post->id }}" class="panel panel-body" data-markdown="{{ $post->markdown }}">
-                                    <span class="chatter_posts">
-                                        @if(!Auth::guest() && (Auth::user()->id == $post->user->id))
-                                        <div id="delete_warning_{{ $post->id }}" class="chatter_warning_delete hidden">
-                                            <i class="chatter-warning"></i>Are you sure you want to delete this response?
-                                            <button class="btn btn-sm btn-danger pull-right delete_response">Yes Delete It</button>
-                                            <button class="btn btn-sm btn-default pull-right">No Thanks</button>
-                                        </div>
-                                        <div class="chatter_post_actions hidden">
-                                            <p class="chatter_delete_btn">
-                                                <i class="chatter-delete"></i> Delete
-                                            </p>
-                                            <p class="chatter_edit_btn">
-                                                <i class="chatter-edit"></i> Edit
-                                            </p>
-                                        </div>
-                                        @endif
-
-
-
-
-                                        <div class="chatter_clear">
-                                            <?= $post->body; ?>
-                                        </div>
-                                    </span>
-                                </li>
-                                @endforeach
-
-
-                            </ul>
-                            @endif
-                        </div>
-
-                        <div id="pagination">{{ $posts->links() }}</div>
-                        @if(!Auth::guest())
-                        <div class="panel ">
-                            <div class="panel-body  ">
-                                <div id="new_response" class="row">
-
-                                    <div class="avatar col-xs-3 col-sm-2 col-md-1 ">
-                                        @if(Config::get('chatter.user.avatar_image_database_field'))
-
-                                        <?php $db_field = Config::get('chatter.user.avatar_image_database_field'); ?>
-
-                                        <!-- If the user db field contains http:// or https:// we don't need to use the relative path to the image assets -->
-                                        @if( (substr(Auth::user()->{$db_field}, 0, 7) == 'http://') || (substr(Auth::user()->{$db_field}, 0, 8) == 'https://') )
-                                        <img src="{{ Auth::user()->{$db_field}  }}">
-                                        @else
-                                        <img src="{{ Config::get('chatter.user.relative_url_to_image_assets') . Auth::user()->{$db_field}  }}">
-                                        @endif
-
-                                        @else
-                                        <span class="avatar_circle" style="background-color:#<?= \App\Helpers\DataHelper::stringToColorCode(Auth::user()->email) ?>">
-                                            {{ strtoupper(substr(Auth::user()->email, 0, 1)) }}
-                                        </span>
-                                        @endif
-                                    </div>
-
-                                    <div id="new_discussion" class="col-xs-8 col-sm-9">
-
-
-                                        <div class="chatter_loader dark" id="new_discussion_loader">
-                                            <div></div>
-                                        </div>
-
-                                        <form id="chatter_form_editor" action="/{{ Config::get('chatter.routes.home') }}/posts" method="POST">
-
-                                            <!-- BODY -->
-                                            <div id="editor">
-                                                @if( $chatter_editor == 'tinymce' || empty($chatter_editor) )
-                                                <label id="tinymce_placeholder">Add the content for your Discussion here</label>
-                                                <textarea id="body" class="richText form-control" class="form-control"  name="body" placeholder="">{{ old('body') }}</textarea>
-                                                @elseif($chatter_editor == 'simplemde')
-                                                <textarea id="simplemde" name="body" class="form-control" placeholder="">{{ old('body') }}</textarea>
-                                                @endif
-                                            </div>
-
-                                            <input type="hidden" name="_token" id="csrf_token_field" value="{{ csrf_token() }}">
-                                            <input type="hidden" name="chatter_discussion_id" value="{{ $discussion->id }}">
-                                        </form>
-
-                                        <!-- #new_discussion -->
-                                        <div id="discussion_response_email">
-                                            <button id="submit_response" class="btn btn-success pull-right"><i class="chatter-new"></i> Submit Response</button>
-                                            @if(Config::get('chatter.email.enabled'))
-                                            <div id="notify_email">
-                                                <img src="/vendor/devdojo/chatter/assets/images/email.gif" class="chatter_email_loader">
-                                                <!-- Rounded toggle switch -->
-                                                <span>Notify me when someone replies</span>
-                                                <label class="switch">
-                                                    <input type="checkbox" id="email_notification" name="email_notification" @if(!Auth::guest() && $discussion->users->contains(Auth::user()->id)){{ 'checked' }}@endif>
-                                                           <span class="on">Yes</span>
-                                                    <span class="off">No</span>
-                                                    <div class="slider round"></div>
-                                                </label>
-                                            </div>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        @else
-
-                        <div id="login_or_register ">
-                            <p>Please <a href="/{{ Config::get('forum.routes.home') }}/login">login</a> or <a href="/{{ Config::get('forum.routes.home') }}/register">register</a> to leave a response.</p>
-                        </div>
-
-                        @endif
                     </div>
                 </div>
-
-            </div>
-            <div class="col-md-3">
-                @if(!Auth::user())
-                <div class="">
-                    <!--<img src="{{asset('uploads/users/img.jpg')}}" alt="John" class="img-profil">-->
-                    <div class="container-m">
-                        <h3></h3>
-                        <p class="title">CEO & Founder, Example</p>
-                        <p>Harvard University</p>
-                        <a href="#"><i class="fa fa-dribbble"></i></a> 
-                        <p><button>Contact</button></p>
+                @endif
+                @endforeach
+                <div class="col-md-10  text-right">
+                    <div id="pagination m0">{{ $posts->links() }}</div>
+                </div>
+                @if(Auth::guest())
+                <div class="col-sm-12  pad0">
+                    <div class="panel  alert alert-success shadow1 bgf9">
+                        <h4 class=" text-success ">Voulez vous internenir dans cette discussion ?</h4>
+                        <p class="text-">Si vous avez un compte, <a class="text-danger" href="{{route('login')}}">connectez vous !</a></p>
+                        <p class="text-">Nouveau, <a class="" href="{{route('register')}}">créer un compte maintenant !</a></p>
                     </div>
                 </div>
                 @else
-                <div class="cards">
-
-                    <h3>Connectez vous</h3>
-                    <form action="{{route('login')}}" method="post">
-                        <div class="form-group row ">
-                            <div class="col-md-12 ">
-
-                                <label for="email" class=" control-label">E-mail</label>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="input-group ">
-
-                                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                    <input id="email" type="email"  placeholder="votrenom@domaine.com" class="form-control " name="email" value="{{ old('email') }}" required autofocus>
-                                    @if ($errors->has('email'))
-    <!--                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>-->
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group row ">
-                            <div class="col-sm-12">
-                                <label for="password" class="control-label">Password</label>
-                            </div>
-                            <div class="col-sm-12">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-
-                                    <input id="password" type="password" placeholder="Mot de passe" class="form-control" name="password" required>
-
-                                    @if ($errors->has('password'))
-    <!--                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>-->
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-                        <div class="text-center form-group">
-                            <button type="submit" class="btn btn-primary btn-block">
-                                Connexion
-                                <i class="fa fa-sign-in"></i>
-                            </button>
-                        </div>
-
-                    </form>
+                <div class="col-sm-12 pad0">
+                    <h4 class=" text-muted ">Répondre au sujet</h4>
                 </div>
+                <form action="{{url(Request::path() )}}" method="POST">
+
+                    {{ csrf_field() }}
+                    <div class="col-sm-10 bordere ">
+
+                        <div class="row comment-cadre  mbottom0 bordere shadow1 rond0  no-sbg">
+
+                            <div class="col-xs-3 col-sm-1 pad0">
+                                <img src="{{asset('uploads/users/img.jpg')}}" class="comment-img img-circle" />
+                            </div>
+                            <div class="col-xs-9 text-justify  col-sm-10">
+                                <h5 class="m0">{{Auth::user()->name}}</h5>
+                                <p class="text-muted text-sm">Il y a 3 jours</p>
+                            </div>
+                            <div class="col-sm-12 pad0 mtop5">
+                                @if ($errors->any())
+                                <ul class="alert alert-danger">
+                                    @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                                @endif
+                                <input type="hidden" name="discussion_id" value="{{$discussion->id}}" />
+                                <textarea rows="3" name="body" class="form-control no-bordere bgfb no-s no-shad m5_0" placeholder="Laisser ici votre réponse" cols="8" >{{old('body')}}</textarea>
+                            </div>
+                            <div class="col-sm-12  pad0 bgf text-right" >
+                                <div class="mtop20">
+
+                                    <input type="submit" value="Soumettre"  class="btn btn-primary rond3 no-border "/>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-sm-2 pad0  text-right" >
+                        <div class="pad0 ">
+
+                            <ul class="list-inline text-xs">
+                                <li>
+                                    <a class="text-muted" href="#"> Comment poster un bon commentaire ?</a>
+                                </li>
+                            </ul>
+                        </div>  
+                    </div>
+
+                </form>
                 @endif
+
+            </div>
+            <div class="col-md-3">
+                <div class="  pad15_0">
+                    <div class="panel panel-default hidden no-border">
+                        <div class=" panel-headings pad15 bgf9 ">
+                            Partagez : 
+                        </div>
+                        <div class="panel-body text-center">
+                            <a class="mt-facebook mt-share-inline-bar-sm" target="_blanck"
+                               href="https://www.facebook.com/sharer/sharer.php?u={{URL::to('/').'/'.Request::path()}}">
+                                <img src="http://mojotech-static.s3.amazonaws.com/facebook@2x.png">
+                            </a>
+                            <a class="mt-twitter mt-share-inline-bar-sm" target="_blanck"
+                               href="http://twitter.com/intent/tweet?text=&amp;url={{URL::to('/').'/'.Request::path()}}">
+                                <img src="http://mojotech-static.s3.amazonaws.com/twitter@2x.png">
+                            </a>
+                            <!--                            <a class="mt-linkedin mt-share-inline-bar-sm" target="_blanck"
+                                                           href="http://www.linkedin.com/shareArticle?mini=true&amp;url={{URL::to('/').'/'.Request::path()}}&amp;summary=">
+                                                            <img src="http://mojotech-static.s3.amazonaws.com/linkedin@2x.png">
+                                                        </a>-->
+                            <a class="mt-google mt-share-inline-bar-sm" target="_blanck"
+                               href="https://plus.google.com/share?url={{URL::to('/').'/'.Request::path()}}">
+                                <img src="http://mojotech-static.s3.amazonaws.com/google@2x.png">
+                            </a>
+                        </div>
+                    </div>             
+                </div>  
             </div>
         </div>
+
     </div>
+</div>
 
 
-    <input type="hidden" id="chatter_tinymce_toolbar" value="{{ Config::get('chatter.tinymce.toolbar') }}">
-    <input type="hidden" id="chatter_tinymce_plugins" value="{{ Config::get('chatter.tinymce.plugins') }}">
-    <input type="hidden" id="current_path" value="{{ Request::path() }}">
-
-    @stop
-
-    @section(Config::get('chatter.yields.footer'))
-
-    @if( $chatter_editor == 'tinymce' || empty($chatter_editor) )
-    <script>var chatter_editor = 'tinymce';</script>
-    @elseif($chatter_editor == 'simplemde')
-    <script>var chatter_editor = 'simplemde';</script>
-    @endif
-    <script src="/vendor/devdojo/chatter/assets/vendor/tinymce/tinymce.min.js"></script>
-    <script src="/vendor/devdojo/chatter/assets/js/tinymce.js"></script>
-    <script>
-        /*var my_tinymce = tinyMCE;
-         $('document').ready(function(){
-         
-         $('#tinymce_placeholder').click(function(){
-         my_tinymce.activeEditor.focus();
-         });
-         
-         });*/
-    </script>
-
-    <script src="/vendor/devdojo/chatter/assets/js/simplemde.min.js"></script>
-    <script src="/vendor/devdojo/chatter/assets/js/chatter_simplemde.js"></script>
-
-
-    <script>
-        /*$('document').ready(function(){
-         
-         var simplemdeEditors = [];
-         
-         $('.chatter_edit_btn').click(function(){
-         parent = $(this).parents('li');
-         parent.addClass('editing');
-         id = parent.data('id');
-         markdown = parent.data('markdown');
-         container = parent.find('.chatter_middle');
-         
-         if(markdown){
-         body = container.find('.chatter_body_md');
-         } else {
-         body = container.find('.chatter_body');
-         markdown = 0;
-         }
-         
-         details = container.find('.chatter_middle_details');
-         
-         // dynamically create a new text area
-         container.prepend('<textarea id="post-edit-' + id + '"></textarea>');
-         // Client side XSS fix
-         $("#post-edit-"+id).text(body.html());
-         container.append('<div class="chatter_update_actions"><button class="btn btn-success pull-right update_chatter_edit"  data-id="' + id + '" data-markdown="' + markdown + '"><i class="chatter-check"></i> Update Response</button><button href="/" class="btn btn-default pull-right cancel_chatter_edit" data-id="' + id + '"  data-markdown="' + markdown + '">Cancel</button></div>');
-         
-         // create new editor from text area
-         if(markdown){
-         simplemdeEditors['post-edit-' + id] = newSimpleMde(document.getElementById('post-edit-' + id));
-         } else {
-         initializeNewEditor('post-edit-' + id);
-         }
-         
-         });
-         
-         $('.discussions li').on('click', '.cancel_chatter_edit', function(e){
-         post_id = $(e.target).data('id');
-         markdown = $(e.target).data('markdown');
-         parent_li = $(e.target).parents('li');
-         parent_actions = $(e.target).parent('.chatter_update_actions');
-         if(!markdown){
-         tinymce.remove('#post-edit-' + post_id);
-         } else {
-         $(e.target).parents('li').find('.editor-toolbar').remove();
-         $(e.target).parents('li').find('.editor-preview-side').remove();
-         $(e.target).parents('li').find('.CodeMirror').remove();
-         }
-         
-         $('#post-edit-' + post_id).remove();
-         parent_actions.remove();
-         
-         parent_li.removeClass('editing');
-         });
-         
-         $('.discussions li').on('click', '.update_chatter_edit', function(e){
-         post_id = $(e.target).data('id');
-         markdown = $(e.target).data('markdown');
-         
-         if(markdown){
-         update_body = simplemdeEditors['post-edit-' + post_id].value();
-         } else {
-         update_body = tinyMCE.get('post-edit-' + post_id).getContent();
-         }
-         
-         $.form('/{{ Config::get('chatter.routes.home') }}/posts/' + post_id, { _token: '{{ csrf_token() }}', _method: 'PATCH', 'body' : update_body }, 'POST').submit();
-         });
-         
-         $('#submit_response').click(function(){
-         $('#chatter_form_editor').submit();
-         });
-         
-         // ******************************
-         // DELETE FUNCTIONALITY
-         // ******************************
-         
-         $('.chatter_delete_btn').click(function(){
-         parent = $(this).parents('li');
-         parent.addClass('delete_warning');
-         id = parent.data('id');
-         $('#delete_warning_' + id).show();
-         });
-         
-         $('.chatter_warning_delete .btn-default').click(function(){
-         $(this).parent('.chatter_warning_delete').hide();
-         $(this).parents('li').removeClass('delete_warning');
-         });
-         
-         $('.delete_response').click(function(){
-         post_id = $(this).parents('li').data('id');
-         $.form('/{{ Config::get('chatter.routes.home') }}/posts/' + post_id, { _token: '{{ csrf_token() }}', _method: 'DELETE'}, 'POST').submit();
-         });
-         
-         });*/
-
-
-    </script>
-    <script src="/vendor/devdojo/chatter/assets/js/chatter.js"></script>
-
-    @stop
+@stop

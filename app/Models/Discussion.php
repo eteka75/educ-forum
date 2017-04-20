@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use DB;
 
 class Discussion extends Model
 {
@@ -25,7 +26,7 @@ class Discussion extends Model
      *
      * @var array
      */
-    protected $fillable = ['categorie_id', 'user_id', 'parent_id', 'title', 'sticky', 'views', 'answered', 'slug', 'color'];
+    protected $fillable = ['categorie_id', 'user_id', 'parent_id', 'title', 'sticky', 'views', 'answered', 'slug', 'color','view_count'];
 
     public function user()
     {

@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Discussion as Discussion;
 use Auth;
 use App;
+
 class UserController extends Controller {
 
     /**
@@ -26,7 +27,7 @@ class UserController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function profil($id = '') {
-        
+
         if ($id >= 1) {
             $user = \App\User::where('id', $id)->first();
             if (!$user) {
@@ -40,12 +41,13 @@ class UserController extends Controller {
             }
         }
 //        dd($user);
-        $da=config("app.name",$user->name.'');
-        $pagination_results= config('forum.paginate.num_of_results');;
-        
-        $discussions = Discussion::where('user_id',$user->id)->with('user')->with('posts')->with('postsCount')->with('category')->orderBy('created_at', 'DESC')->paginate($pagination_results);
-       
-        
+        $da = config("app.name", $user->name . '');
+        $pagination_results = config('forum.paginate.num_of_results');
+        ;
+
+        $discussions = Discussion::where('user_id', $user->id)->with('user')->with('posts')->with('postsCount')->with('category')->orderBy('created_at', 'DESC')->paginate($pagination_results);
+
+
         return view('forum.user_profil', compact('discussions', 'user'));
     }
 
@@ -97,6 +99,47 @@ class UserController extends Controller {
         // Dynamically register markdown service provider
 //        \App::register('GrahamCampbell\Markdown\MarkdownServiceProvider');
         return view('forum.index', compact('discussions', 'categories', 'chatter_editor'));
+    }
+
+    public function NewSujet() {
+        $categories = Category::all();
+//        dd($discussions);
+        $cat_list = $categories;
+        $s_categories = [0 => "== Sélectionnez le domaine de la question =="];
+        foreach ($cat_list as $key => $value) {
+            $s_categories[$value['id']] = $value['name'];
+        }
+        return view('forum.newsujet', compact('categories', 's_categories'));
+    }
+    public function userNotifications() {
+        $categories = Category::all();
+//        dd($discussions);
+        $cat_list = $categories;
+        $s_categories = [0 => "== Sélectionnez le domaine de la question =="];
+        foreach ($cat_list as $key => $value) {
+            $s_categories[$value['id']] = $value['name'];
+        }
+        return view('forum.newsujet', compact('categories', 's_categories'));
+    }
+    public function FaqForum() {
+        $categories = Category::all();
+//        dd($discussions);
+        $cat_list = $categories;
+        $s_categories = [0 => "== Sélectionnez le domaine de la question =="];
+        foreach ($cat_list as $key => $value) {
+            $s_categories[$value['id']] = $value['name'];
+        }
+        return view('forum.newsujet', compact('categories', 's_categories'));
+    }
+    public function SettingProfil() {
+        $categories = Category::all();
+//        dd($discussions);
+        $cat_list = $categories;
+        $s_categories = [0 => "== Sélectionnez le domaine de la question =="];
+        foreach ($cat_list as $key => $value) {
+            $s_categories[$value['id']] = $value['name'];
+        }
+        return view('forum.newsujet', compact('categories', 's_categories'));
     }
 
 }

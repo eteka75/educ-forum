@@ -18,164 +18,7 @@
         <!--<link href="{{ asset('assets/css/chatter.css') }}" rel="stylesheet">-->
         <script src="{{ asset('js/jquery.min.js') }}"></script>
         <style type="text/css">
-            body{
-                background: #F0F1F4;
-                background: #f1f1f1;
-                /*background: #eceff1;*/
-                height: 100%;
-                /*font-family:verdana,arial,sans-serif;*/
-                color:#555555;
-                font-family: 'open sans',sans-serif, 'Opens sans','Source sans Pro','Trebuchet Ms',serif;
-            }
-            .micone li i{
-                font-size: 20px;
-                line-height: 20px;
-                float: left;
-                padding-right: 5px;
-            }
-            .mtop5{margin-top: 5px;}
-            .panel-default .panel-heading,.heading {
-                background-color: #f9fafb;
-                color: #555555;
-            }
-            .margin-top{
-                margin-top: -20px;
-            }
-            .nav {
-                font-family:Arial,sans-serif;
-                font-size:13px;
-            }
-            .discussions .panel a:hover{color:#111111}
-            .discussions .panel a{
-                color: #243238;
-                text-decoration:none;
-            }
-            .avatar_circle {
-                width: 60px;
-                height: 60px;
-                line-height:55px;
-                text-align: center;
-                background: #263238;
-                display: inline-block;
-                border-radius: 30px;
-                color: #fff;
-                font-size: 20px;
-            }
-            #username a:hover{background: #0061d5;color: #ffffff;}
-            #username ul a{
-                padding: 8px 10px;
-            }
-            #username>a{
-                max-width: 150px;
-                white-space: nowrap;
-                text-overflow:ellipsis;
-                overflow: hidden;
-                padding: 5px 10px;
-                margin: 10px auto;
-                border-radius: 2px;
-                color: inherit;
-            }
-            #username .dropdown-menu{
-                margin-top: -10px;
-                border-width: 0;
-                padding-top: 0;
-                padding-bottom: 0;
-            }
-            #search-group .form-control:focus{box-shadow:none;background: #fff; }
-            #search-group .input-group-btn .btn,
-            #search-group .form-control{
-                border:1px solid #eee;
-                background: #f5f5f5;
-                outline: none;
-                /*border-radius: 15px 0 0 15px;*/
-            }
-            #search-group .input-group-btn .btn{border-left-width: 0px}
-            div.middle_title{
-                padding: 0px;
-                color: #1d2129;
-                color: #1d1d1d;
-                -webkit-transition: color 0.3s ease;
-                transition: color 0.3s ease;
-                font-size: 18px;
-                /*font-weight: bold;*/
-                padding-top: 10px;
-                padding-bottom: 10px;
-                display: block;
-                font-family: Georgia, Lucida Grande, Tahoma, Verdana, Arial, sans-serif;
-                font-size: 18px;
-                font-weight: 500;
-                line-height: 22px;
-                padding: 0;
-                margin-bottom: 5px;
-                max-height: 110px;
-                overflow: hidden;
-                word-wrap: break-word;
-                /*color: #4772d9;*/
-                /*                font-family: Times,serif;*/
-            }
-            .bgfb{background: #FBFCFD}
-            .bgf9{background: #f9fafb}
-            .post-footer>div{border-top: 1px solid #ddd;}
-            p.middle_content a{
-                font-size: 12px;
-                color:#333333 !important;
-                font-family: Helvetica, Arial, sans-serif;
-                line-height: 16px;                
-            }
-            p.middle_content{
-                max-height: 90px;
-                overflow: hidden;
-            }
-            .chatter_cat{
-                /*                background: #ccc;
-                                color: #fff;*/
-                border-radius: 30px;
-                font-weight: bold;
-                font-size: 10px;
-                padding: 3px 7px;
-                display: inline;
-                /*text-shadow:0 1px 0px #000;*/
-                position: relative;
-                top: -2px;
-            }
-            .pad15{padding: 15px}
-            .pad0_15{padding:0 15px}
-            .pad15_0{padding: 15px 0}
-            .padtop10{padding-top: 0px}
-            .pad-panel{padding: 0px  15px 5px}
-            .navbar{
-                margin-bottom: 0;
 
-                background: #fff;
-                /* background: linear-gradient(to left, #28a5f5, #1e87f0);
-                 background: #286090;
-                 background: #337ab7;*/
-                /*background: linear-gradient(145deg, #4772d9, #6d47d9);*/
-                background-color: #fff;
-                /*background-color: #d6071b;*/
-                padding-top: 15px;
-                padding-bottom: 15px;
-                border-bottom: 1px solid #eeeeee;
-                border-bottom: 0px solid rgba(0,0,0,.0975);
-                margin-bottom: 20px;
-                /*background: #31708f;*/
-                padding: 10px;
-                box-shadow: 0 1px 3px 0 rgba(44,62,80,0.15);
-                /*background-color: #fff;*/
-            }
-            /*.navbar-default .navbar-brand,.navbar-default .navbar-nav>li>a,.navbar a{color: #fff;}*/
-
-            .categ-inline{
-                margin-left: -2px;
-            }
-            .form-control{
-                border-radius: 0;
-                box-shadow: none;
-                border-color: #dedede;            
-                resize: none;
-            }
-            .pad0{padding: 0}
-            .m0{margin: 0}
         </style>
         <style type="text/css">
             @yield('css')
@@ -196,7 +39,7 @@ window.Laravel = {!! json_encode([
 
                         <!-- Collapsed Hamburger -->
                         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
-                            <span class="sr-only">Toggle Navigation</span>
+                            <span class="sr-only">Menu</span>
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
@@ -294,17 +137,34 @@ window.Laravel = {!! json_encode([
             <div class='container'>
                 <div class='row'>
                     <div class='col-sm-12 col-sm-offset-0'>
+                        
                         @if(Session::has('flash_message'))
-                        <p class="alert alert-info">{!! Session::get('flash_message') !!}</p>
+                        <p class="alert alert-default">
+                            <button type="button" data-dismiss="alert" aria-hidden="true" class="close">×</button>
+                            <strong>Parfait !</strong><br>
+                            {!! Session::get('flash_message') !!} 
+                        </p>
                         @endif
                         @if(Session::has('info'))
-                        <p class="alert alert-info">{!! Session::get('info') !!}</p>
+                        <p class="alert alert-info">
+                            <button type="button" data-dismiss="alert" aria-hidden="true" class="close">×</button>
+                            <strong>Information !</strong><br>
+                            {!! Session::get('info') !!}
+                        </p>
                         @endif
                         @if(Session::has('danger'))
-                        <p class="alert alert-danger">{!! Session::get('danger') !!}</p>
+                        <p class="alert alert-danger">
+                            <button type="button" data-dismiss="alert" aria-hidden="true" class="close">×</button>
+                            <strong>Désolé !</strong><br>
+                            {!! Session::get('danger') !!}
+                        </p>
                         @endif
                         @if(Session::has('warning'))
-                        <p class="alert alert-warning">{!! Session::get('warning') !!}</p>
+                        <p class="alert alert-warning">
+                            <button type="button" data-dismiss="alert" aria-hidden="true" class="close">×</button>
+                            <strong>Attention !</strong><br>
+                            {!! Session::get('warning') !!}
+                        </p>
                         @endif
                     </div>
                 </div>

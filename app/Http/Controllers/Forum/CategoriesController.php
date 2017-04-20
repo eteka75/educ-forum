@@ -118,19 +118,18 @@ class CategoriesController extends Controller {
 
 
         if ($request->hasFile('image')) {
-           $uploadPath = public_path('/uploads/' . config("forum.dossiers.category"));
+            $uploadPath = public_path('/uploads/' . config("forum.dossiers.category"));
 
             $extension = $request->file('image')->getClientOriginalExtension();
             $fileName = rand(11111, 99999) . '.' . $extension;
 
             $request->file('image')->move($uploadPath, $fileName);
-            
+
             $requestData['image'] = $fileName;
         }
 
         $category = Category::findOrFail($id);
-         $requestData['slug'] = $category['slug'];
-
+        $requestData['slug'] = str_slug($requestData['name']);
         $category->update($requestData);
 
         Session::flash('flash_message', 'Category updated!');

@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -9,9 +9,9 @@
 namespace App\Helpers;
 
 use Illuminate\Database\Eloquent\Model;
+use Auth;
+class HtmlRender extends Model {
 
-class HtmlRender extends Model
-{
     public static function HtmlConvertePost($param) {
         $data = '';
         foreach ($param as $key => $discussion) {
@@ -36,23 +36,55 @@ class HtmlRender extends Model
                 $data .= '<span class="avatar_circle" style="height:50px;width:50px;  background:#' . \App\Helpers\DataHelper::stringToColorCode($discussion->user->email) . '">
                                     ' . strtoupper(substr($discussion->user->email, 0, 1)) . '</span>';
             }
+            $cat_url = '/' . config('forum.routes.home') . '/' . Config('forum.routes.category') . '/' . $discussion->category->slug;
             $data .= '</div>
                         </div>
-                        <div  class="col-xs-7 col-sm-9 col-md-9">
-                            <div class="pad15_0 ">
+                        <div  class="col-xs-9 col-sm-10 col-md-10">
+                        
+                        ';
+            if(Auth::user()){
+                         $data.='
+                                 <div class="dropdown pull-right">
+                                <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                <span class="fa fa-angle-down"></span>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                               
+                              ';
+                            /*Vérifier si celui qui est connecté est l'auteur*/
+                          if(Auth::user()->id === $discussion->user->id)
+                            {
+                                $data.='
+                                  <li><a href="#">Modifier</a></li>
+                                  <li><a href="#">Supprimer</a></li>
+                               
+                              ';
+                               
+                            }
+                                $data.='
+                                  <li><a href="#">Ajouter aux favoris</a></li>
+                                  <li><a href="#">Signaler</a></li>
+                               
+                              ';
+                            
+                              
+                           $data.= ' </ul></div>';
+            }
+                               $data.='<div class="pad15_0 "> 
+                            
+                            
 
                                 <h5 class="user_info ">
-                                    <a href="'.url(config('forum.routes.home').'/profil/'.$discussion->user->id).'">' . ucfirst($discussion->user->{config('forum.user.database_field_with_user_name')}) . '</a>
+                                    <a href="' . url(config('forum.routes.home') . '/profil/' . $discussion->user->id) . '">' . ucfirst($discussion->user->{config('forum.user.database_field_with_user_name')}) . '</a>
                                 </h5>
+                                
                                 <p class="user_post_date"> 
-                                    <ul class="list-unstyled list-inline"><li><i class="fa fa-clock-o"></i> ' . \Carbon\Carbon::createFromTimeStamp(strtotime($discussion->created_at))->diffForHumans() . ' </li><li> <i class="fa fa-folder-o"></i> <span class="chatter_cat_" style="_background-color:' . $discussion->category->color . '">' . $discussion->category->name . '</span></li></ul>
+                                    <ul class="list-unstyled list-inline text-muted text-sm"><li><i class="fa fa-clock-o"></i> ' . \Carbon\Carbon::createFromTimeStamp(strtotime($discussion->created_at))->diffForHumans() . ' </li><li>  <a href="' . $cat_url . '" > <i class="fa fa-folder-o"></i> <span class="chatter_cat_" style="_background-color:' . $discussion->category->color . '">' . $discussion->category->name . '</span></a></li></ul>
                                 </p>
+                               
                             </div>
 
 
-                        </div>
-                        <div class="col-xs-2 col-sm-1 col-md-1">
-                        <i class="fa  fa-sort-desc pull-rights "></i>
                         </div>
                         
                     </div>
@@ -74,15 +106,16 @@ class HtmlRender extends Model
                         <a class="discussion_list" href="/' . config('forum.routes.home') . '/' . config('forum.routes.discussion') . '/' . $discussion->category->slug . '/' . $discussion->slug . '">
                             ' . substr(strip_tags($discussion_body), 0, 200);
             $data .= (strlen(strip_tags($discussion_body)) > 200) ? '...' : '';
+            $terminaison=($discussion->view_count>1)?'s':'';
             $data .= '</a>
                         </p>
                 </div>
                 <div class="row post-footer">
                     <div class="btn bgf9 col-xs-6 col-sm-6">
-                       <h5 class="text-muted"><i class="fa fa-comments"></i> '.$discussion->postsCount[0]->total.' </h5>
+                       <p class="text-muted m0 text"><i class="fa fa-comments"></i><br> <span class="text-xs">Réponse'.$terminaison.':<b>' . $discussion->postsCount[0]->total  . '</b></span>  </p>
                        </div>
                        <div class="btn bgf9 col-xs-6 col-sm-6">
-                       <h5 class="text-muted"><i class="fa fa-eye"></i> '.$discussion->viewCount[0]->total.' </h5>
+                       <p class="text-muted m0 text"><i class="fa fa-eye"></i><br> <span class="text-xs">Vue'.$terminaison.':<b>' . $discussion->view_count . '</b></span>  </p>
                    </div>
                 </div>
                 <div class="chatter_right">
@@ -94,4 +127,5 @@ class HtmlRender extends Model
         }
         return $data;
     }
+
 }

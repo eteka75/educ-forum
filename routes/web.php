@@ -11,46 +11,57 @@
   |
  */
 
-
 Route::group(['prefix' => config('forum.routes.home')], function () {
-\Carbon\Carbon::setLocale(config('app.locale'));
-    
+//Route::when('*', 'posts.view_throttle');
+//    Route::filter('posts.view_throttle', '\App\Event\ViewThrottleFilter');
+    \Carbon\Carbon::setLocale(config('app.locale'));
+
     Route::get('/', 'PageController@index'); /* Page d'accueil */
     Route::get('/home', 'PageController@index'); /* Page d'accueil */
     Route::get(config('forum.routes.category') . '/{slug}/', 'Forum\DiscussionController@showCategorie')->name('categorie'); /* Affichage des sujets par catégorie */
+    Route::get(config('forum.routes.category') . '/', 'Forum\DiscussionController@showCategorie')->name('categorie'); /* Affichage des sujets par catégorie */
     // Afficher une seul discussion
     Route::get(config('forum.routes.discussion') . '/{category}/{slug}', [
         'as' => 'showInCategory',
         'uses' => 'Forum\DiscussionController@show',
         'middleware' => 'web',
     ]);
-    
-    Route::get(config('forum.routes.sujets') .'/all/', [
+    Route::post(config('forum.routes.discussion') . '/{category}/{slug}', [
+        'as' => 'SaveComment',
+        'uses' => 'Forum\DiscussionController@SaveComment',
+        'middleware' => 'web',
+    ]);
+    Route::get('/search', [
+        'as' => 'SearchQuestion',
+        'uses' => 'PageController@SearchQuestion',
+        'middleware' => 'web',
+    ]);
+    Route::get(config('forum.routes.sujets') . '/all/', [
         'as' => 'showAllSujets',
         'uses' => 'Forum\DiscussionController@showAllSujets',
 //        'middleware' => 'auth',
     ]);
-    Route::get(config('forum.routes.sujets') .'/favoris/', [
+    Route::get(config('forum.routes.sujets') . '/favoris/', [
         'as' => 'showFavorisSujets',
         'uses' => 'Forum\DiscussionController@showFavorisSujets',
 //        'middleware' => 'auth',
     ]);
-    Route::get(config('forum.routes.sujets') .'/user/', [
+    Route::get(config('forum.routes.sujets') . '/user/', [
         'as' => 'showUserSujets',
         'uses' => 'Forum\DiscussionController@showUserSujets',
         'middleware' => 'auth',
     ]);
-    Route::get(config('forum.routes.sujets') .'/user', [
+    Route::get(config('forum.routes.sujets') . '/user', [
         'as' => 'showLoginUserSujets',
         'uses' => 'Forum\DiscussionController@showUserSujets',
         'middleware' => 'auth',
     ]);
-    Route::get(config('forum.routes.discussion') .'/user/', [
+    Route::get(config('forum.routes.discussion') . '/user/', [
         'as' => 'showUserDiscussions',
         'uses' => 'Forum\DiscussionController@showUserDiscussions',
         'middleware' => 'auth',
     ]);
-    Route::get(config('forum.routes.all') ."-".config('forum.routes.category') .'/', [
+    Route::get(config('forum.routes.all') . "-" . config('forum.routes.category') . '/', [
         'as' => 'showAllCategory',
         'uses' => 'Forum\DiscussionController@showAllCategory',
 //        'middleware' => 'guest',
@@ -61,7 +72,28 @@ Route::group(['prefix' => config('forum.routes.home')], function () {
         'uses' => 'Forum\UserController@profil',
         'middleware' => 'auth',
     ]);
-    Route::get('/profil/{id}', [
+    Route::get('/profil/compte', [
+        'as' => 'showProfilAccount',
+        'uses' => 'Forum\UserController@showProfilAccount',
+        'middleware' => 'auth',
+    ]);
+    Route::get('/profil/sujets', [
+        'as' => 'showProfilSujet',
+        'uses' => 'Forum\UserController@showProfilSujet',
+        'middleware' => 'auth',
+    ]);
+    Route::get('/profil/discussions', [
+        'as' => 'showProfilDiscussions',
+        'uses' => 'Forum\UserController@showProfilDiscussions',
+        'middleware' => 'auth',
+    ]);
+    Route::get('/profil/contacts', [
+        'as' => 'showProfilContacts',
+        'uses' => 'Forum\UserController@showProfilContacts',
+        'middleware' => 'auth',
+    ]);
+    
+    Route::get('/profil/{id?}', [
         'as' => 'userProfil',
         'uses' => 'Forum\UserController@profil',
 //        'middleware' => 'guest',
@@ -71,12 +103,12 @@ Route::group(['prefix' => config('forum.routes.home')], function () {
         'uses' => 'Forum\UserController@userNotifications',
         'middleware' => 'auth',
     ]);
-    Route::get('/profil/{id}/'.config('forum.routes.sujets'), [
+    Route::get('/profil/{id}/' . config('forum.routes.sujets'), [
         'as' => 'userProfilSujets',
         'uses' => 'Forum\UserController@profil',
 //        'middleware' => ['web','Auth'],
     ]);
-    Route::get('/'.config('forum.routes.sujets'), [
+    Route::get('/' . config('forum.routes.sujets'), [
         'as' => 'AllSujets',
         'uses' => 'Forum\UserController@AllSujets',
         'middleware' => 'guest',
@@ -86,7 +118,7 @@ Route::group(['prefix' => config('forum.routes.home')], function () {
         'uses' => 'Forum\UserController@search',
         'middleware' => 'guest',
     ]);
-    /*MISE A JOUR SUJETS*/
+    /* MISE A JOUR SUJETS */
     Route::get('/sujets/new', [
         'as' => 'NewSujet',
         'uses' => 'Forum\UserController@NewSujet',
@@ -107,25 +139,25 @@ Route::group(['prefix' => config('forum.routes.home')], function () {
         'uses' => 'Forum\UserController@UpdateSujet',
         'middleware' => 'auth',
     ]);
-    /*MISE A JOUR COMMENTAIRES*/
+    /* MISE A JOUR COMMENTAIRES */
     Route::post('/comments/new/{id}', [
         'as' => 'NewComment',
         'uses' => 'Forum\UserController@NewComment',
         'middleware' => 'auth',
     ]);
-    
+
     Route::get('/comments/{id}/update', [
         'as' => 'UpdateComment',
         'uses' => 'Forum\UserController@UpdateComment',
         'middleware' => 'auth',
     ]);
-    
+
     Route::post('/comments/{id}/update', [
         'as' => 'SaveUpdateComment',
         'uses' => 'Forum\UserController@SaveUpdateComment',
         'middleware' => 'auth',
     ]);
-    
+
     Route::delete('/comments/{id}/delete', [
         'as' => 'DeleteComment',
         'uses' => 'Forum\UserController@DeleteComment',
@@ -136,7 +168,7 @@ Route::group(['prefix' => config('forum.routes.home')], function () {
         'uses' => 'Forum\UserController@SaveVoteComment',
         'middleware' => 'auth',
     ]);
-    
+
     Route::get('/profil/update', [
         'as' => 'UpdateProfil',
         'uses' => 'Forum\UserController@UpdateProfil',
@@ -158,7 +190,7 @@ Route::group(['prefix' => config('forum.routes.home')], function () {
         'uses' => 'Forum\UserController@SaveChangePassword',
         'middleware' => 'auth',
     ]);
-    /*Affichage et envoie de données*/
+    /* Affichage et envoie de données */
     Route::get('/settings', [
         'as' => 'SettingProfil',
         'uses' => 'Forum\UserController@SettingProfil',
@@ -169,11 +201,11 @@ Route::group(['prefix' => config('forum.routes.home')], function () {
         'uses' => 'Forum\UserController@SaveSettingProfil',
         'middleware' => 'auth',
     ]);
-    /*Aide à l'Utilisation*/
+    /* Aide à l'Utilisation */
     Route::get('/faq', [
         'as' => 'FaqForum',
         'uses' => 'Forum\UserController@FaqForum',
-        'middleware' => 'guest',
+//        'middleware' => 'guest',
     ]);
     Route::get('/regles-confidentialite', [
         'as' => 'Reglements',
@@ -185,7 +217,7 @@ Route::group(['prefix' => config('forum.routes.home')], function () {
         'uses' => 'Forum\UserController@Contact',
         'middleware' => 'guest',
     ]);
-    /*Signaler une erreure*/
+    /* Signaler une erreure */
     Route::get('/feedback', [
         'as' => 'FeedBack',
         'uses' => 'Forum\UserController@FeedBack',
@@ -211,8 +243,6 @@ Route::group(['prefix' => config('forum.routes.home')], function () {
         'uses' => 'Forum\UserController@UniversityMembers',
         'middleware' => 'guest',
     ]);
-    
-    
 });
 Auth::routes();
 Route::get('/', 'PageController@index');
@@ -233,7 +263,7 @@ Route::resource('domaines', 'Forum\\DomainesController');
 //Route::get('settings', 'UserController@settings');
 //Route::get('cercles', 'cercles');
 //Route::get('{user}/discussion/', 'cercles');
-Route::get('/ajax/posts/','Forum\DiscussionController@getAjaxList');
+Route::get('/ajax/posts/', 'Forum\DiscussionController@getAjaxList');
 Route::resource('categories', 'Forum\\CategoriesController');
 Route::resource('categories', 'Forum\\CategoriesController');
 Route::resource('categories', 'Forum\\CategoriesController');
