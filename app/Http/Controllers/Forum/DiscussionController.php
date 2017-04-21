@@ -88,8 +88,12 @@ class DiscussionController extends Controller {
         $posts = Post::with('user')->where('discussion_id', '=', $discussion->id)->orderBy('created_at', 'ASC')->paginate($numpage);
 //        Event::fire('posts.view', $posts[0]);
 
+        $posts_nb = config('forum.paginate.posts_num_right');
+        $posts_right = Discussion::where('id','!=',$discussion->id)->with('user')->with('post')->with('category')->orderBy('created_at', 'DESC')->take($posts_nb)->orderBy('view_count', 'ASC')->paginate(12);
+
+
         $editor = config('forum.editor');
-        return view('forum.discussion', compact('discussion', 'posts', 'slug', 'editor'));
+        return view('forum.discussion', compact('discussion', 'posts', 'slug', 'editor','posts_right'));
     }
 
     public function showCategorie($slug = '') {
@@ -133,10 +137,11 @@ class DiscussionController extends Controller {
 
         $discussions = Discussion::with('user')->with('posts')->with('postsCount')->with('category')->orderBy('created_at', 'DESC')->paginate($pagination_results);
         $categories = Category::all();
+
         $posts_nb = config('forum.paginate.posts_num_right');
         $posts_right = Discussion::with('user')->with('post')->with('category')->orderBy('created_at', 'DESC')->take($posts_nb)->orderBy('view_count', 'ASC')->paginate(12);
 
-        return view('forum.allsujets', ['categories' => $categories, 'discussions' => $discussions, 'slug' => '','posts_right'=>$posts_right]);
+        return view('forum.allsujets', ['categories' => $categories, 'discussions' => $discussions, 'slug' => '', 'posts_right' => $posts_right]);
     }
 
     public function showUserSujets($id = 0) {

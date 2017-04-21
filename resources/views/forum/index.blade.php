@@ -21,7 +21,7 @@
             <div class="list-card  well bgfb">
 
                 <h4>Quel est votre difficulté ?</h4>
-                <div class=" fa fa-rem">
+                <div class="">
 
 
                     {!! Form::open(['url' => '/sujets/new', 'class' => 'pad0 m0', 'files' => true]) !!}
@@ -32,13 +32,7 @@
                 </div>
             </div>
             @endif
-            <script>
-                $(function () {
-                    $('#edit_post').on("focus click", function () {
-                        $('#less_post').removeClass("hidden").slideDown('slow');
-                    });
-                });
-            </script>
+           
             <div >
                 <div class="card-max-width">
                     <div class="tab-v1">

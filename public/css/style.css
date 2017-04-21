@@ -30,7 +30,9 @@ body{
 .mtop30{margin-top: 30px;}
 
 .mbottom0{margin-bottom: 0px !important;}
+.mbottom20{margin-bottom: 20px;}
 .mbottom30{margin-bottom: 30px;}
+.mbottom40{margin-bottom: 40px;}
 
 ul.pagination{margin-bottom: 3px;}
 .clear-o{
@@ -254,7 +256,7 @@ ul.alert.alert-danger,ul.alert.alert-info,ul.alert.alert-success{list-style-type
 .btn-warning,.label-warning,.progress-bar-warning{background-color:#f4b400;color:#444444;}
 .alert-dismissable .close, .alert-dismissible .close{right: 0}
 .hupsize-1{font-size: 16px}
-.no-border{border-width: 0}
+.no-border{border-width: 0 !important}
 .no-bg{background: none}
 .no-shad,.no-shad:hover{box-shadow:none }
 .text-sm{font-size: 12px}

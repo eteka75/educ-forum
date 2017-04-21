@@ -137,7 +137,7 @@ window.Laravel = {!! json_encode([
             <div class='container'>
                 <div class='row'>
                     <div class='col-sm-12 col-sm-offset-0'>
-                        
+
                         @if(Session::has('flash_message'))
                         <p class="alert alert-default">
                             <button type="button" data-dismiss="alert" aria-hidden="true" class="close">×</button>
@@ -176,24 +176,24 @@ window.Laravel = {!! json_encode([
         <script src="{{ asset('js/app.js') }}"></script>
         <script src="{{ asset('js/index.js') }}"></script>
         <!--<script type="text/javascript" src="{{asset('js/plugins/jquery.min.js')}}"></script>-->
-        <!--<script type="text/javascript" src="{{asset('js/plugins/jquery.pjax.js')}}"></script>-->
+        <script type="text/javascript" src="{{asset('js/plugins/jquery.pjax.js')}}"></script>
         <script type="text/javascript">
-                                                   /* $('a').attr('data-pjax',"#app");
-                                                    $('a').pjax(undefined, {
-                                                    error: function(jqXHR, textStatus, errorThrown) {
-                                                    alert("Could not use pjax!\n\n" + jqXHR + "\n\n" + textStatus + "\n\n" + errorThrown);
-                                                    }
-                                                    });
-                                                    
-                                                    $('body').bind('pjax:start', function(xhr, options) {
-                                                    $("#app").css({"opacity":'.5'})
-                                                    $(options.container).fadeOut("2000", function() {
-                                                    alert("Faded out");
-                                                    });
-                                                    }).bind('pjax:end', function(xhr, options) {
-                                                    $("#app").animate({"opacity":'.5'},10000)
-                                                    $(options.container).hide("slow");
-                                                    });*/
+                                                   $('a').attr('data-pjax', "#app");
+                                                   $('a').pjax(undefined, {
+                                                       error: function (jqXHR, textStatus, errorThrown) {
+                                                           alert("Could not use pjax!\n\n" + jqXHR + "\n\n" + textStatus + "\n\n" + errorThrown);
+                                                       }
+                                                   });
+
+                                                   $('body').bind('pjax:start', function (xhr, options) {
+                                                       $("#app").css({"opacity": '.5'})
+                                                       $(options.container).fadeOut("2000", function () {
+                                                           alert("Faded out");
+                                                       });
+                                                   }).bind('pjax:end', function (xhr, options) {
+                                                       $("#app").animate({"opacity": '.5'}, 10000)
+                                                       $(options.container).hide("slow");
+                                                   });
         </script>
     </body>
 </html>

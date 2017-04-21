@@ -1,7 +1,7 @@
 <div>
     <h5 class="m0 psanel-heading"><i class="fa fa-yelp text-success"></i> Questions à suivre</h5>
     <div class="panelpanel-default">
-        <div class="panel-body__">
+        <div class="panel-body__ mtop5">
             <ul class="list-unstyled post-list-right mtop10">
                 @if(isset($posts_right))
                 @foreach($posts_right as $rpost)

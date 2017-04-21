@@ -89,9 +89,11 @@
                     </ul>    
                 </div>
                 @else
-                <div class="clear-o text-center">
-                    <h1 class="huge-3 text-muted-0 text-muted"><i class="fa fa-pencil-square-o"></i></h1>
-                    <p>Aucune réponse pour le moment</p>
+                <div class="col-sm-12 pad0">
+                    <div class="clear-o bgf9 shadow1__   text-center">
+                        <h1 class="huge-3 text-muted-0 text-muted"><i class="fa fa-pencil-square-o"></i></h1>
+                        <p>Aucune réponse pour le moment</p>
+                    </div>
                 </div>
                 @endif
                 @else
@@ -143,9 +145,9 @@
                     <div id="pagination m0">{{ $posts->links() }}</div>
                 </div>
                 @if(Auth::guest())
-                <div class="col-sm-12  pad0">
-                    <div class="panel  alert alert-success shadow1 bgf9">
-                        <h4 class=" text-success ">Voulez vous internenir dans cette discussion ?</h4>
+                <div class="col-sm-12  pad0 mbottom40">
+                    <div class="alert alert-success no-border rond0 bgf9">
+                        <h4 class=" text-success ">Voulez vous intervenir dans cette discussion ?</h4>
                         <p class="text-">Si vous avez un compte, <a class="text-danger" href="{{route('login')}}">connectez vous !</a></p>
                         <p class="text-">Nouveau, <a class="" href="{{route('register')}}">créer un compte maintenant !</a></p>
                     </div>
@@ -205,31 +207,7 @@
 
             </div>
             <div class="col-md-3">
-                <div class="  pad15_0">
-                    <div class="panel panel-default hidden no-border">
-                        <div class=" panel-headings pad15 bgf9 ">
-                            Partagez : 
-                        </div>
-                        <div class="panel-body text-center">
-                            <a class="mt-facebook mt-share-inline-bar-sm" target="_blanck"
-                               href="https://www.facebook.com/sharer/sharer.php?u={{URL::to('/').'/'.Request::path()}}">
-                                <img src="http://mojotech-static.s3.amazonaws.com/facebook@2x.png">
-                            </a>
-                            <a class="mt-twitter mt-share-inline-bar-sm" target="_blanck"
-                               href="http://twitter.com/intent/tweet?text=&amp;url={{URL::to('/').'/'.Request::path()}}">
-                                <img src="http://mojotech-static.s3.amazonaws.com/twitter@2x.png">
-                            </a>
-                            <!--                            <a class="mt-linkedin mt-share-inline-bar-sm" target="_blanck"
-                                                           href="http://www.linkedin.com/shareArticle?mini=true&amp;url={{URL::to('/').'/'.Request::path()}}&amp;summary=">
-                                                            <img src="http://mojotech-static.s3.amazonaws.com/linkedin@2x.png">
-                                                        </a>-->
-                            <a class="mt-google mt-share-inline-bar-sm" target="_blanck"
-                               href="https://plus.google.com/share?url={{URL::to('/').'/'.Request::path()}}">
-                                <img src="http://mojotech-static.s3.amazonaws.com/google@2x.png">
-                            </a>
-                        </div>
-                    </div>             
-                </div>  
+                @include('includes.right_list_posts');
             </div>
         </div>
 

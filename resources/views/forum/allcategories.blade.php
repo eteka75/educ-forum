@@ -18,7 +18,7 @@
                 @foreach($categories as $category)
 
                 <div class="col-sm-3 col-xs-6 pad5_10  ">
-                    <div class="panel card-panel shadow1 rond0 no-border ">
+                    <div class="panel card-panel shadow1__ rond0 no-border ">
                         <?php
                         $image = ('uploads/users/img.jpg');
                         if (isset($category->image) && $category->image != '') {
@@ -28,9 +28,9 @@
                             }
                         }
                         ?>
-                        <div class="img-div-cat">
+<!--                        <div class="img-div-cat">
                             <img  src="{{asset($image)}}" class="img-responsive" alt="Categorie" />
-                        </div>
+                        </div>-->
                         <div class="panel-body foot-div-cat">
                             <h5 class=" m5_0"><a class="no-link" href="{{route('categorie',$category->slug)}}">{{$category->name}}</a> <span class="text-primary pull-right"><i  class="fa fa-comments "></i> {{$category->discussions()->count()}}</span></h5>
 
@@ -49,14 +49,14 @@
         </div>
 
         <div class="col-md-3">
-            <div class="panelpanel-body ">
+<!--            <div class="panelpanel-body ">
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="Search words with regular expressions ...">
                     <span class="input-group-btn">
                         <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
                     </span>
                 </div>
-            </div>
+            </div>-->
         </div>
     </div>
 </div>
